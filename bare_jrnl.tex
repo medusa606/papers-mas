@@ -1,0 +1,438 @@
+\documentclass[letterpaper, 10 pt, journal, twoside]{IEEEtran}
+%\documentclass[journal]{IEEEtran}
+\usepackage[maxnames=6,firstinits=true,doi=false,url=true,isbn=false]{biblatex}
+\addbibresource{IROS.bib}
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{color}
+\usepackage{threeparttable}
+\usepackage{balance} %balance columns
+\usepackage{todonotes}
+\hyphenation{op-tical net-works semi-conduc-tor}
+
+%\pagenumbering{gobble} %suppresses page numbers
+
+\begin{document}
+\title{A Multi-Agent Systems approach to Test Generation for Simulation-based Autonomous Vehicle Verification}
+\author{Greg~Chance$^{1}$, 
+Abanoub~Ghobrial$^{1}$, 
+Severin Lemaignan$^{2}$,
+Tony Pipe$^{2}$,
+Kerstin Eder$^{1}$%~\IEEEmembership{Senior Member,~IEEE}, 
+
+
+%\thanks{Manuscript received: Feb 23, 2018; Revised: May 21, 2018; Accepted: Jun 21, 2018.}
+\thanks{$^{1}$Abanoub Ghobrial, Greg Chance and Kerstin Eder are with the University of Bristol, Bristol, UK {\tt\footnotesize \{greg.chance, abanoub.ghobrial, kerstin.eder\}@bristol.ac.uk}}%
+\thanks{$^{2}$Severin Lemaignan and Tony Pipe are with the Bristol Robotics Laboratory, University of the West of England, Bristol, UK {\tt\footnotesize \{severin.lemaignan, tony.pipe\}@brl.ac.uk}}%
+}
+% The paper headers
+%\markboth{Submission to IEEE AI Testing 2019}%
+%{Shell \MakeLowercase{\textit{et al.}}: Bare Demo of IEEEtran.cls for IEEE Journals}
+%\markboth{IEEE Robotics and Automation Letters. Preprint Version. Accepted June, 2018}
+%{Chance \MakeLowercase{\textit{et al.}}: ``Elbows Out" - Predictive Tracking of Partially Occluded Pose} 
+\maketitle
+
+\begin{abstract}
+Simulation-based verification is beneficial for assessing otherwise dangerous or costly on-road testing of autonomous vehicles (AV). This paper addresses the challenge of efficiently generating effective tests for simulation-based AV verification using software testing agents. The multi-agent system (MAS) programming paradigm offers rational agency, causality and strategic planning between multiple agents. We exploit these aspects for test generation, focusing in particular on the generation of tests that trigger preconditions of assertions. On a small example we show that, by encoding a variety of different behaviours respondent to the agent's perceptions of the test environment, the agent-based approach generates twice as many effective tests than pseudo-random test generation. It is both scalable and efficient. Moreover, agents can be encoded to behave more naturally without compromising the effectiveness of test generation. %
+%
+Our results suggest that generating tests using testing agents allows engineers to reach edge cases and rare events more easily. %
+% GC:
+Our results suggest that generating tests using testing agents significantly improves upon random and simultaneously provides more realistic driving scenarios.
+
+% Simulation based verification for autonomous vehicles (AV) is beneficial for assessing otherwise dangerous or costly on-road testing. The multi-agent system (MAS) programming paradigm was used in the context of AV verification to explore the potential for test generation. Generating tests using autonomous agents has many benefits including scalability and engineering efficiency. We explore different agent behaviours towards the goal of assertion coverage through a simple example. By provoking behaviours based on the agents perceptions of the scenario we show that the agent-based test generation out-performs random agent actions by over 50\% in terms of test generation accuracy. MAS test generation shows promising results for simulation based verification allowing engineers to exploit edge cases and rare events more easily. 
+
+\end{abstract}
+\begin{IEEEkeywords}
+Test Generation, Simulation, Autonomous Driving, Verification, Multi-Agent System, Testing Agent
+\end{IEEEkeywords}
+\IEEEpeerreviewmaketitle
+
+%------------------- Intro -----------------------------
+\section{Introduction}
+%\IEEEPARstart{A}{n} agent is a computational mechanism that exhibits a high degree of autonomy, performing actions in its environment based on information received \cite{Panait2005}. A multi-agent system contains one or more agents whom interact but may not share information about the environment that is known by a single agent. This individual level information bias may lead to emergent properties in the multi-agent group behaviour as a result of the interaction between agents.
+
+%----------------------------------------------------------
+% What is verification
+\IEEEPARstart{V}{erification} is the process used to gain confidence in the correctness of a system wrt.\ its requirements~\cite{bergeron???}. Testing is a technique that can be used to achieve this by showing that the intended and actual behaviours of a system do not differ and detecting failures against the requirements in the process~\cite{utting2012taxonomy}.
+
+
+
+%----------------------------------------------------------
+% What is the role of testing
+% above
+
+%----------------------------------------------------------
+% The principle of verification based testing
+Testing autonomous driving functions and safety critical scenarios in simulation can benefit from a fully controlled environment where road layouts, weather conditions and other traffic participants (GC: driving scenario parameters???) can be directed to achieve specific test targets. These tests may look to convince auditors of the functional safety of the vehicle or whether it complies with commonly agreed upon road conduct, such as the Vienna convention~\cite{ViennaConv}, which is usually interpreted locally by each country, e.g.\ the UK Highway Code~\cite{codes2011highway}. In addition, there are also road traffic laws and penalties, e.g.~\cite{RoadTraffic1988}, and unwritten rules or social conventions to follow. These may be culturally or geographically different, e.g.\ flashing headlights to override junction priorities to give way to another driver.
+
+
+%----------------------------------------------------------
+% The (automated) Test Generation challenge
+Semiconductor hardware verification can take up to 70\% of the design effort [International Technology Roadmap for Semiconductors, Design Chapter, 2005 Edition. Avail- able at http://public.itrs.net] and similar to AV verification exhaustive testing is intractabe due to vast parameter space.
+
+How do you generate interesting tests that cover the same level of testing as 100M miles of motorway driving?
+%
+For the public to gain trust in autonomous vehicles (AV), the manufacturers must demonstrate that their AVs comply with, amongst many things, road safety requirements. While on-road testing will contribute significantly towards AV verification, testing in simulation has complimentary benefits as it offers a safe and effective environment. 
+
+%
+\todo[inline]{Automation:} Testing in simulation enables many processes to be automated which may be convenient for ensuring compliance during version change, e.g. software updates or patches to the vehicle control system. But automation can also apply to not just the process but the method of test generation which is the focus of this paper.
+
+
+\begin{figure}[!t]
+	\centering
+\includegraphics[width=0.48\textwidth]{taxonomy.png}
+	\caption{Taxonomy of model-based test generation, from \cite{utting2012taxonomy}}
+	\label{taxonomy}
+\end{figure}
+
+
+%----------------------------------------------------------
+% The AV as a DUT/SUV/DUV
+Considering the AV as a device under test (DUT) the verification engineer is presented with a familiar set of tasks entailing the discovery of bugs, corner cases, unanticipated events and to reach complete \cite{KE?} coverage within reasonable time and cost.
+%
+%----------------------------------------------------------
+% Responder
+A suitable anaolgy is that of a responder which interacts with an abstracted level of the testing environment and as such only interacts passively (responds) to a recieved stimulus and whilst also fulfilling it's own objectives is also expected to adhere to legal protocol, which are the expected driving behaviours to that stimulus for the AV.
+%
+%----------------------------------------------------------
+% The promise of AGENCY to address verifying responders
+Investigating the opportunity of agency to address the challenges of verifying the responder is the principle hypothesis of this research.
+%----------------------------------------------------------
+% Research Questions
+% -new test generation technique
+\todo[inline]{Phrase as a question}Our key contribution to the field is to propose a new test generation technique: agent based test generation. 
+%----------------------------------------------------------
+% Test generation taxonomy
+This technique will sit alongside and complement the techniques in the existing verification taxonomy~\cite{utting2012taxonomy}. The new method will form a new leaf node at the Test Generation-Technology branch of the existing taxonomy of model-based test generation, Fig~\ref{taxonomy}.
+
+This work proposes using an agent based model for test generation. This fits in within the existing taxonomy of model-based testing \cite{utting2012taxonomy} under the test generation - technology branch.\todo[inline]{more/stronger motivation - why agents? what is the challenge/problem?}
+
+\todo[inline]{mention how there are formal and informal rules of the road, both of which are valid testsRegulators would use the former to assess the safety case for the vehicle, whereas public opinion may be persuaded more by compliance of the latter. Trustworthiness will certainly be composed of both aspects of differing proportions depending on the audience.}
+
+
+
+%----------------------------------------------------------
+% Test Bench Architecture
+The proposed test bench, see Fig.~\ref{testbench}, is driven by a specification for the experiment which defines the scene and scenario \cite{Ulbrich2015} including all dynamic actors. The Vehicle Behaviour Interface (VBI) connects the AV controller to the simulator. It provides the simulator with the driving decisions of the AV and forwards updates on the scene to the AV controller. 
+%
+A geospacial database logs the AV and all other actors to enable post-simulation assertion checking as described in~\cite[ref our test bench paper]. 
+%
+\begin{figure}[!t]
+	\centering
+\includegraphics[width=0.48\textwidth]{Test_Bench_Architecture.png}
+	\caption{Test bench design.}
+	\label{testbench}
+\end{figure}
+
+The experiment or test specification~\cite{ref to the paper with all the terminology} to the test bench may be generated in a number of ways familiar to the verification engineer. Tests may be manually generated by the verification engineer which will be both valid and accurate in producing the desired test conditions but at the highest cost. Random methods are usually employed at an early stage of testing to get coverage quickly but potentially suffer from generating invalid tests or tests that are not interesting, where interesting in this case refers to exercising the decision making processes of the AV. Model-based test generation sits between these methods in terms of validity of tests and the cost to produce them. Model-based testing requires a model that encodes the behaviour of the test environment then used to generate tests for execution.
+
+
+%----------------------------------------------------------
+% Scene, Scenario definitions
+% in above
+
+%----------------------------------------------------------
+% Summary
+
+%----------------------------------------------------------
+% MAS background and use of MAS for TG (morse, norway - in email from KE)
+\subsection{Multi-Agent System}
+
+Georgeff and Lansky were key in the development of the belief-desire intention agent programming approach~\cite{georgeff1987reactive} and also in the early work of multi-agent systems~\cite{georgeff1988communication}.
+%
+Waters et al. describe improvements to BDI agents through modifying the intention selection method using priority-based schedulers. They propose \textit{enablement checking} where an agent should not attempt to pursue an intention if there is no way to accomplish it and claim substantial benefits can be gained when 'running vulnerable programs in dynamic environments'~\cite{Waters2015}. This is an interesting approach and highly relevant to the AV verification domain potentially preventing unwanted emergent agent behaviour such as 'zombie attack'.
+%
+Schut et al. argue that the intentions of a rational agent are not static and should reconsider their intentions if they cannot be acted upon~\cite{Schut2004}. Considering the degree of inaccessibility of the goal and cleverly considering intention reconsideration as an action the authors use POMDP to find the optimal intention reconsideration policy. Faccin et al. propose higher level intention selection using a meta-model to learn and predict plan outcomes~\cite{faccin2015bdi} demonstrating positive experimental results.
+
+%----------------------------------------------------------
+% Automated TG
+Automatically generating stimulus that will increase functional coverage is a key challenge in simulation based verification and is a key vitue of constrained pseudo-random techniques. But such techniques are also far from completely automated, as the verification engineer must supply the suitbale constriants which become ever more complex in real driving scenarios. Feedback based coverage-driven generation (CDG) is a technique employing machine learning techniques to automatically generate tests based on rewards from a neural network or Markov Decision Process (MDP). Inductive Logic Programming based Coverage Driven Generation (ILP-CDG) has been shown to improve coverage closure by training on data generated during psuedo-random test generation and learning rules to constrain subsequent simulations~\cite{Eder2007}.
+%
+%----------------------------------------------------------
+% MAS Automated TG
+Combining the BDI framework with an automated test generation approach leads to the idea of a software agent capable of generating tests. Intelligent agents have been used in the human robot interaction (HRI) domain with a coverage feedback driven generation approach using reinforcement learning to explore collaborative manufacturing~\cite{Araiza-Illan2016}. The idea of a test agent has also been proposed by Enoiu et. al.,~\cite{Enoiu2019} for regression testing althouhg more for test selection than generation, where agents decide what tests to execute and with what prioritisation and include agent messaging.
+
+
+%----------------------------------------------------------
+% lead from MAS background into literature
+
+
+
+%------------------- Related -----------------------------
+\section{Related Work}
+Describe conventional methods for test generation for verification, e.g. formal methods, random methods, hand-written tests.
+
+Include koopman, and stanford ISL
+
+Include the latent logic approach
+
+This work proposes using an agent based model for test generation. This fits in within the existing taxonomy of model-based testing \cite{utting2012taxonomy} under the test generation - technology branch.\todo[inline]{more/stronger motivation - why agents? what is the challenge/problem?}
+
+How will we achieve this? Set out the scene with the simulator and the test-bench structure -- lead into how to the focus here which is to  generate the tests - define scene, scenario and any other sim terms
+Utting et al. \cite{utting2012taxonomy} present a taxonomy of existing model-based test generation approaches
+%
+Discuss the ways that you can generate tests 1)use random 2) use engineers to write tests 3)AI/ML methods ...
+
+There are many factors that may influence the choice of test generation for your application, here we choose to focus on accuracy and cost, see~Fig\ref{cost_accuracy}. Accuracy in this context is defined as the ratio of tests that exercise the targeted assertion compared to the total number of tests generated. In another way this is the efficiency of the test generation method in 'finding' coverage.
+
+Cost in this context is defined as either computational costs or time put in to write the test by a verification engineer. As shown in Fig\ref{cost_accuracy}, some methods may be relatively low cost with low accuracy such as a random method. Random based methods are very popular for AV verification (refs) with the idea being that enough low probability events over millions of miles of testing will give auditors the confidence that enough corner cases have been experienced.
+
+The other end of the spectrum takes us to hand written tests by verification engineers or those with vested interests in specific scenarios, e.g. a local authority assessing safety of a new road layout. The test case written by the engineer will almost certainly achieve the desired coverage point but at a much higher cost than a random method.
+
+In this paper we explore the use of a multi-agent system approach to test generation. In theory the MAS technique should achieve better accuracy than a random method and with a relatively small increase in cost.\todo{say why} The former we can quantitatively measure in controlled tests where the latter is slightly more difficult to assess (e.g. development time) but here we elect to use computational time and number of lines of code. A full description of the assessment is given in Section~\ref{Test Case}.
+
+
+%------------------- Problem -----------------------------
+\section{Problem and Hypothesis}
+
+We want to verify the AV's suitability for deployment on the road by testing the autonomous driving functions against a set of assertions that an auditor or regulator may take as part of a body of evidence to assess the vehicle's safety case.
+
+To gain trust the AV must demonstrate its ability to make the right decision and, as discussed in~\cite{koopman}, for the right reason, although we will not go to that level of assessment in this paper. So how do we gain trust in this context? On-road testing is an obvious start and an essential part of testing albeit the most costly and time consuming. Testing in simulation is an appealing route many are now considering~\cite{refs} due to the level of control and alleviates many safety related restrictions to the type of tests that can be undertaken. There are the brute-force approaches to simulation~\cite{ref} where verification is sought simply through a high number of driven miles which has been estimated should be in the millions~\cite{ref} if not hundreds of millions~\cite{ref} and requiring substantial computing resources to complete within a 1-2 month time-frame~\cite{ref}.
+
+Do we discuss model-based test gen? Or formal methods? \todo[inline]{both, so we can compare}
+
+Generating targeted test cases can be a more efficient way to get complete coverage for the system. By finding tests that exercise the complete decision making domain we can do away with 'unnecessary miles' of testing.
+
+Finish saying that this is a conceptual proof and not a complete exploration of the concept, choosing only a single assertion may invite criticism but the goal here is to prove that with a small cost/outlay of engineering time we can generate agents that accurately generate tests. The next level would be agents that can act on multiple assertions and their intention selection is a feedback controlled from the coverage checker.
+
+This is done to assess that the test generation conception can generate valid tests and how this compares to random based techniques.
+
+%------------------- Natural Behaviour vs. Edge Case ----------------------
+\subsection{Natural Behaviour vs. Edge Case}
+One could argue that the simulation environment presented to the AV should be as close to the real world it seeks to emulate as the optimum proving ground [ref]. In this case such efforts seek to reduce the \textit{reality gap}~\cite{Jakobi1995} providing the  most likely scenarios and agent behaviour. One approach is to monitor real traffic scenarios from traffic monitoring cameras, tracking individual vehicles, cyclists and pedestrians and from these build behavioural models for each road scene that you have traffic data for [ref latent logic]. This type of natural behaviour model uses data from a distribution of users that will include various styles of driving and road behaviour(?). An interesting way to further differentiate this distribution would be to assign personality traits to certain behaviours. Assigning personality traits to agents~\cite{Zoumpoulaki2010} in a simulation environment would be a way to bias the normal behavioural distribution towards a certain scenario of interest. For example, an egoist personality type may accept a lower time-to-collision (TTC) than more risk-adverse personalities resulting in scenarios that promote the AV to exercise decisions related to braking and collision avoidance. Over-representing certain personality traits in the simulation may result in scenarios where \textit{the unlikely happens more often}. 
+
+It is also easy to see this approach could be expanded with other traits such clumsiness (pedestrian bumping into each other), social engagement level (inter-agent engagement) or propensity for distraction, e.g. engagement with mobile device, to further enrich the simulation environment.
+
+% What do we want to do with these ideas - use the agent based framework to drive test generation
+This research proposes that agent based test generation (ABTG) can be used as an efficient and scaleable method for AV verification. Within existing multi-agent frameworks [ref JASON] agents are given specific goals and actions which are updated based on perceptions of the environment. The proposed implementation would work similarly, where agents (cars, pedestrians, cyclists, traffic lights etc.) are given goals that relate to the coverage task required. As such, simulated driving  scenarios are not prescriptive at the outset but evolve with time based on the actions of the agents and the test vehicle.
+
+%example of ABTG
+For example, an agent could be tasked with assessing the emergency braking function of the autonomous vehicle. In which case the agent would promote behaviours that may result in the AV taking this action. %Therefore agents crossing the road in front of the AV with a small TTC may reach this coverage point quicker than waiting for it to happen by random.
+
+
+%
+%Integrating these complex inter-agent relations into a simulator may result in more realistic agent behaviour and therefore more realistic driving experiences for the AV.
+%
+
+
+
+%------------------- Method -----------------------------
+\section{Case Study}
+ 
+This section describes a case study to explore the proposed test generation method. The aim is to generate tests that exercise the precondition for a single assertion: collision avoidance. The precondition in this case states that for the associated decision making process in the AV to be exercised an entity in the path of the vehicle should be avoided either by braking or manouvering.  A single assertion is chosen to isolate assessment of the test generation concept and not a demonstrate a complete verification process. The assertion chosen in this example is collision avoidance with a pedestrian and a successful test would be when the pedestrian enters the emergency braking zone of the DUT, i.e. within a 1s time-to-collision (TTC) window of the leading edge of the vehicle. The outcome of the test and the behaviour of the AV are not the focus here, but that tests are generated using the agent framework that satisfy the precondition for the assertion. 
+
+%------------------- Test Agents -----------------------------
+\subsection{Test Agents}
+To assess if the agent based model of test generation is effective it is compared to random methods and repeated sufficiently for statistical power. A simple scene is chosen containing a straight road with a pavement either side represented in a grid world with a finite (1.0s) time interval. For this example pedestrian and test agent are synonymous. At the start of a test pedestrians are randomly located onto the pavement area and the AV is represented as a vehicle that drives at constant speed in a straight line and will not brake or turn. The test agents have differing levels of behaviour from simple random to more complex and directed, which is the focus of this section. 
+
+The different pedestrian actions can be split into two main classes: random and directed, see Table~\ref{ResultsTable}. For the random class, the \textit{random action} is where the test agent can make any random movement at each tick where the available actions are: do nothing (stand still), move up, down, left or right. For the \textit{random behaviour} the pedestrian is instantiated walking along the pavement before the simulation starts and has only one action; to randomly choose when to cross the road. The random behaviour is included so that a comparison between crossing the road at a targeted or random time can be made. 
+
+The second class of actions are based on perceptions of the pedestrian and these agents are initialised walking along the pavement as in random behaviour. The \textit{proximity} behaviour instructs the agent to cross the road when the AV is within a certain radius. Using the \textit{intersect} behaviour, the agent calculates an intersection time and chooses to cross the road if the pedestrian can reach the intersection point before the AV has passed. The \textit{election} behaviour ranks the probability of each agent to enact the intersect behaviour and elects the agent with the highest likelihood of success.
+
+The \textit{proximity} behaviour describes an agent, for this assertion, with suicidal tendencies that will step into the road whenever a car is nearby but is a highly improbably model of pedestrian actions. The \textit{proximity} behaviour also suffers from the `zombie effect' where all nearby pedestrians are drawn to the passing vehicle which may lead to the coverage point required but through an improbable scenario. The \textit{intersect} behaviour is a more refined version of the proximity behaviour but may still result in multiple agents attempting to intersect the AV simultaneously whereas the \textit{election} behaviour should limit this to a single agent.
+
+% Agent numbers
+The number of agents is also a factor to consider for this demonstration, too few and the likelihood of an agent triggering the assertion will be low and entirely dependent on the initial starting position in the test environment due to differences in speed. The maximum number of agents could be considered all the available grid locations (1.5m spacing) on the pavement without overlap.
+As the number of agents, $nA$, tends to this maximum the probability of hitting the coverage point using a random class increases significantly as more agents appear in the road with an increase in computation expense. As $nA$ increases using more intelligent behaviour methods, suitable agents to complete the assertion should be found more readily resulting in shorter and hence more efficient tests. The range of $nA$  explored was 1-10.
+
+% Shortcomings
+As with any model refinements could be made to improve coverage success, such as comparing direction of travel between the AV and the agent or modifying pedestrian speed, but this example is kept simple to illustrate the concept. 
+
+%------------------- Test Environment -----------------------------
+\subsection{Test Environment}
+The testing environment, see Fig.~\ref{gridRoad} is a straight two-lane road 99m long and each lane is 6m wide. Pavements are on both sides of the road which are three meters in width giving a total size is 18m x 99m. 
+%
+The assumed AV velocity is 20 mph which is equivalent to 9.1 m/s that is rounded down to 9 m/s. The pedestrian velocity is 3 mph equivalent 1.4 m/s rounded up to 1.5 m/s. The map is discretised with 1.5 meter resolution for simple division into the AV and pedestrians velocities. Thus, in the discretised world the AV velocity is 6 unit/sec and the pedestrians velocity is 1 unit/sec. The total number of map cells is 12 x 66 = 792 cells. 
+
+The AV travels along the left hand lane of the road starting at cell $y=0$ and travelling to the end, cell $y=66$. If the assertion is triggered or the AV reaches the end of the road then the test is restarted. The AV occupies an area 4.5x3m equivalent to 4x2 cells. There are no other vehicles and the right hand side of the road is unoccupied.
+
+The environment is initialised with the agents spawned randomly on any valid pavement area (see note below). When the environment is reset new random locations are set for the agents. Control over random locations are set using a fixed seed based on the experiment number (1-1000) and so tests are repeatable between agent types, i.e. An experiment with 5 agents using a random method with have the same starting locations as using any other method which ensures valid comparison between agent types.
+
+Valid test if agent found in 'braking zone' of the ave which extends 6 units forwards of the leading edge of the vehicle. Any agent found in this area is defined as a valid test and the environment is reset.
+
+Some areas of the environment are impossible for the agents to intersect the AV and are therefore invalid spawn locations. On the left hand-side of the left pavement a pedestrian needs to move three cells to the right to reach the left part of the centre of the left lane. This is equivalent to three seconds. In this time the AV crosses 18 units. Therefore, the first 18 cells of the left-hand side of the left pavement are dead-zone where pedestrians cannot intersect the car if spawn inside this zone. Similarly, the first 12 cells of the right-hand side of the left pavement, the first 36 cells of the left-hand side of the right pavement and the first 54 cells of the right-hand side of the right pavement are all invalid spawn locations. 
+
+%On the right hand-side of the left pavement a pedestrian needs to move two cells to the right to reach the left part of the centre of the left lane. This is equivalent to two seconds. In this time the AV crosses 12 units. Therefore, the first 12 cells of the left-hand side of the left pavement are invalid spawn locations. On the left hand-side of the right pavement a pedestrian needs to move six cells to the right to reach the left part of the centre of the left lane. This is equivalent to six seconds. In this time the AV crosses 36 units. Therefore, the first 36 cells of the left-hand side of the right pavement are dead-zone (pedestrians cannot intersect the car if spawn inside this zone). On the right hand-side of the right pavement a pedestrian needs to move nine cells to the right to reach the left part of the centre of the left lane. This is equivalent to nine seconds. In this time the AV crosses 54 units. Therefore, the first 54 cells of the left-hand side of the right pavement are dead-zone (pedestrians cannot intersect the car if spawn inside this zone). 
+
+
+
+\begin{figure}[!t]
+	\centering
+\includegraphics[width=0.48\textwidth]{RoadLayout.pdf}
+	\caption{Test environment at full scale (left) and in detail (right) including valid and invalid spawn locations for the pedestrians and the position and direction of the AV.}
+	\label{gridRoad}
+\end{figure}
+
+
+\todo[inline]{the following sectiong has changes missing}
+
+%------------------- Scoring -----------------------------
+\subsection{Scoring}
+Each agent behavioural method will be repeated 1'000 times and the number of valid tests counted. To reiterate, a valid test is when a pedestrian intersects the AV and for simplicity we assume this is when they have the same coordinates. %
+In an attempt to impose more realistic behaviour on the agents, a scoring system is used that penalises certain actions. A living cost is imposed on the agents to promote shorter tests and a penalty is given for agents that are in the road but not intersecting the AV.
+
+The scoring system is:
+\begin{itemize}
+  \item A reward of 20 is given if the agent intersects the AV.
+  \item A penalty of -1 for each time step.
+  \item A penalty of -7 for each time step spent in the road.
+\end{itemize}
+
+
+%------------------- Simulation and Logging -----------------------------
+\subsection{Simulation and Logging}
+Each of the agent behaviours were written into the Jason platform along with the test environment as described above. For each test a basic log of the agent actions, score and time to completion are recorded and then averaged for each type. A list of random start locations was created for the pedestrians and this was done for each value of $nA$ explored, i.e. 1-10. The list was then used to spawn the pedestrians for each behavioural type to ensure the initial conditions were identical.
+
+Ultimately the scoring should reflect the benefits of the methods against the needs of test generation: accuracy, cost and robustness. We want tests that are accurate (valid tests, collects coverage) and sufficiently low cost (CPU hours, engineering time). If tests are robust they are adaptable to real-time events, e.g. AV slows down around bend requiring agents to recalculate intersection.
+
+%Robustness comes from the generated tests being adaptable to non-deterministic AV behaviour, i.e. linear extrapolation of the vehicle position is not possible. The origin of the graph below identifies the lowest cost, accuracy and robustness test cases which can be attributed to random generation. By using more advanced methods we hope to improve accuracy and robustness with minimal cost.
+
+
+
+
+%------------ Results Discussion ---------------
+\section{Results}
+The results section is split into 4 parts; Accuracy is the ratio of sucessfull tests the agents generated as a ratio of all tests, Score is a measure of how natural the agents behaved, Combined Score combines accuracy with score, and Time is how long the agents took to generate the test in both simulation ticks and wall clock time. Both Score and Time have distributions associated with them and as such confidence intervals are provided.
+
+
+%--------------------------------------------------------
+\subsection{Test Accuracy}
+Test generation accuracy, defined as the number of tests that have activated the pre-condition for the asserion as a ratio of all tests, are shown for each agent type in Fig.~\ref{Accuracy}. The \textit{random action} (RA) and \textit{random behaviour} (RB) have lower accuracy compared to directed agents when $nA<10$. For high $nA$ the accuracies converge mostly due to a saturation of agents (explained above).
+%
+Fig.~\ref{Accuracy} also shows that for $nA=1$ a directed agent outperforms a random agent by more than 2:1. The \textit{election} agent generates a slightly higher accuracy than the \textit{proximity} agent but only by 2.2\%. However, for $nA=2$ and above the \textit{proximity} agent has a 10\% increase over the election agent which is because this agent has multiple attempts to trigger the pre-condition whereas the election agent only has one.
+
+\todo[inline]{Agent density vs. accuracy - can be used to det how many agents required for map size}
+
+\begin{figure}[!t]
+	\centering
+\includegraphics[width=0.48\textwidth]{Accuracy.pdf}
+	\caption{Accuracy.}
+	\label{Accuracy}
+\end{figure}
+
+
+
+%--------------------------------------------------------
+\subsection{Test Score}
+For tests that activate the pre-condition the average agent score is compiled including 95\% confidence interval range, see Fig.~\ref{AgentScore}. The maximum theoretical score of any agent is 94 which includes 100 points for a successful test sub tracting a living cost of 1 and road penalty of 5. For a single agent scores between agent types are similar as accuracy is being controlled for by including only the successful tests. As the number of agents increases the random class diverge from the directed class and the variance in the random agent score increases. 
+
+\todo[inline]{why no variance for nA=1 in random? this is counter intuitive, it suggests random agents that succeed score only the highest value score!} As $nA$ increases for the random agents, the number of agents found on the road also increases and hence average score drops rapidly, whereas the directed class are only found crossing the road when they deem fit and are on the pavement at all other times keeping the score much higher.
+%
+\todo[inline]{include the theoretical max score line} Note that the directed agent class are close to the theoretical maximum score, Fig.~\ref{AgentScore}(dashed line). 
+%
+The high score for the $nA=1$ random class is surprising especially as the error bars are small indicating that, although the accuracy is low, tests generated are relatively efficient, i.e. the pedestrian does not spend a lot of time in the road.
+%
+No significant dfference between the directed class is seen in the score even with a high number of agents indicating both represent a similar level of natural behaviour, at least within the limited scope of this example.
+
+
+\begin{figure}[!t]
+	\centering
+\includegraphics[width=0.48\textwidth]{AgentScore.pdf}
+	\caption{The average agent score for successful tests with 95\% confidence intervals for each agent type. Random class are hollow markers and directed class are filled. The maximum theoretical score is 94 points but this is only applicable to a single agent hence the declining average with increasing agent numbers.}
+	\label{AgentScore}
+\end{figure}
+
+
+%--------------------------------------------------------
+\subsection{Combined Score}
+As the score (above section xx.xx) controls for accuracy it can be misleading to interpret these results so a combined score is provided which is given by 1x10-3 * score * accuracy. This combined measure promotes scores that are attached to high accuracies, describing agents that can generate useful tests with natural pedestrian behaviour. Time could have been included as a numerator here but is similar in scope to the living penalty so not included.%
+%
+The normalised results, Fig~\ref{Combined}, show that the directed agents are over twice as effective within this new combined definition than random agents for $nA=1$ although this advanted drops rapidly with increasing agent numbers to reach a steady gap of around 12\%.
+%
+The \textit{random behaviour} agent outperforms the \textit{random action} for $nA<4$ beyound which there is little difference. So if random is your choice, you might as well just use completely random unless you want to use low agent numbers. %
+%
+The \textit{election} agent has the highest combined score for $nA=1$ but higher agent numbers are favor the \textit{proximity} agent up to $nA=4$ beyond which there is no notable difference between the directed agent types. %
+%
+%
+\todo[inline]{Describe relation to theoretical maximal?}
+
+
+
+\begin{figure}[!t]
+	\centering
+\includegraphics[width=0.48\textwidth]{Combined.pdf}
+	\caption{The combined accuracy and score for each agent type.}
+	\label{Combined}
+\end{figure}
+
+%\todo[inline]{y-axis is "normalised combined score" reduce height of all graphs by 30\%, change all x-axis to 1,2,3 not 10^0, add theoretical max score on this chart}
+
+
+
+%--------------------------------------------------------
+\subsection{Time}
+For each successful test geneated the reported time was averaged over $k$-tests and compared across different agent numbers, Fig.~\ref{Time}. The directed agents consistently improve over the time taken by the random class for $nA=1$ by around a single simulation tick and this trend continues as agent numbers increase. By $nA=20$ the directed agents are 1.85 simulation ticks faster than the random agents.
+Overall the \textit{proximity} agents find tests in the shortest time.
+
+\begin{figure}[!t]
+	\centering
+\includegraphics[width=0.48\textwidth]{Time.pdf}
+	\caption{The average time taken for an agent to find a successful tests.}
+	\label{Time}
+\end{figure}
+
+\todo[inline]{change time y-axis to sim ticks not seconds, remove valid, add wall clock time to second y-axis, add error bars to time}
+
+
+
+%--------------------------------------------------------
+\subsection{Results Analysis}
+The results show that by nearly all the metrics and parameter combinations discussed above, (accuracy, natural behaviour score, test generation time) the directed agents outperform the random agents. This shows that even a small amount of intelligence can be a distinct advantage over random techniques. 
+%
+But what was the cost of developing these agent behaviours?
+And is there a limited payoff to gain significantly superior intelligence for really complex agent behaviour? %
+%
+Comparing the lines of code for the agent action definition can help to weigh the investment in agent complexity. Lines of code for each are below and the combined score for $nA=1$ is in brackets:
+\begin{itemize}
+  \item \textit{random action} = 23 (0.35),
+  \item \textit{random behaviour} = 82 (0.45),
+  \item \textit{proximity} = 86 (0.96),
+  \item \textit{election} = 235 (1.0) 
+\end{itemize}
+indicating that for a small investment the \textit{random action} agent can be improved significantly with 4x the initia code to improve it's combined score to near the theoretical maximal. To improve further with the \textit{election} agent took 10x the initial code with minmal score improvement suggesting this was not worth the investment and also considering for $nA>1$ \textit{proximity} proved more effective.
+
+This also raises the question of how comlex the agents sould be? The analysis above would suggest that the level of agent complexity should be considered carefully as a simpler level of intelligence could be more beneficial. %
+
+
+
+
+%----------------- Conclusion ---------------------------
+\section{Conclusion}
+The MAS programming paradigm offers rational agency and strategic planning to software agents that have been exploited in this research for test generation. 
+%
+On a small example we show that, by encoding a variety of different behaviours respondent to the agent's perceptions of the test environment, the agent-based approach generates twice as many effective tests than pseudo-random test generation and agents can be encoded to behave more realistically without compromising the effectiveness of test generation. %
+% I think this shouldbe changed  to state:
+% Our results suggest that generating tests using testing agents allows engineers to reach edge cases and rare events more easily.
+Our results suggest that generating tests using testing agents significantly improves upon random and simultaneously provides more realistic driving scenarios.
+
+
+
+\subsection{Future Work}
+%
+In this small case study there is only a single assertion considered. But how agents behave when multiple assertions or \textit{desires} exist will be key to the success of this method. This could be achieved with a number of methods such as MDP and ANN.
+%
+As discussed in~\cite{Eder2007} agents that have their goal selection modified based on coverage feedback would be an important step in this direction. This also fits in with the feedback reward of many such architectures, e.g. rewards for MDP and backpropagation for ANN. 
+
+Composing agents with a feature based representation of their environment is also a direction to ensure agents can scale to large physical maps and also adaptable to new features as needed. This approach also fits in with most ML techniques.
+%
+% Agents online adaptability to AV behaviour (robustness)
+Including personality to agents is also another avenue that could provide insightful as a tuning parameter. Conventionally agressive (or egoist) behaviour may seem the most dangerous and therefore require oversampmling. But there could also be merit in exploring more risk-advers behaviours. 
+%
+There is also the possibility to have have combination of random and directed agents to ensure the initial coverage is satisfied, then add more intelligent agents for hole coverage.
+
+%----------------- Acknowledgment ---------------------------
+\section*{Acknowledgment}
+This work was performed under the framework of the ROBOPILOT and CAPRI project
+(Innovate UK, Grant no.s xxxxx and xxxxx). 
+%We gratefully acknowledge the support of NVIDIA Corporation with the donation of a Titan Xp GPU used for this research.
+
+\todo[inline]{code is available at github\...}
+
+%----------------- Bibliography ---------------------------
+\balance
+\section*{References}
+\printbibliography[heading=none]
+\end{document}
+
