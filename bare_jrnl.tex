@@ -15,7 +15,7 @@
 %\pagenumbering{gobble} %suppresses page numbers
 
 \begin{document}
-\title{A Multi-Agent Systems approach to Test Generation for Simulation-based Autonomous Vehicle Verification}
+\title{A Multi-Agent Systems Approach to Test Generation for Simulation-based Autonomous Vehicle Verification}
 \author{Greg~Chance$^{1}$, 
 Abanoub~Ghobrial$^{1}$, 
 Severin Lemaignan$^{2}$,
@@ -35,11 +35,10 @@ Kerstin Eder$^{1}$%~\IEEEmembership{Senior Member,~IEEE},
 \maketitle
 
 \begin{abstract}
-Simulation-based verification is beneficial for assessing otherwise dangerous or costly on-road testing of autonomous vehicles (AV). This paper addresses the challenge of efficiently generating effective tests for simulation-based AV verification using software testing agents. The multi-agent system (MAS) programming paradigm offers rational agency, causality and strategic planning between multiple agents. We exploit these aspects for test generation, focusing in particular on the generation of tests that trigger preconditions of assertions. On a small example we show that, by encoding a variety of different behaviours respondent to the agent's perceptions of the test environment, the agent-based approach generates twice as many effective tests than pseudo-random test generation. It is both scalable and efficient. Moreover, agents can be encoded to behave more naturally without compromising the effectiveness of test generation. %
+Simulation-based verification is beneficial for assessing otherwise dangerous or costly on-road testing of autonomous vehicles (AV). This paper addresses the challenge of efficiently generating effective tests for simulation-based AV verification using software testing agents. The multi-agent system (MAS) programming paradigm offers rational agency, causality and strategic planning between multiple agents. We exploit these aspects for test generation, focusing in particular on the generation of tests that trigger preconditions of assertions. On a small example we show that, by encoding a variety of different behaviours respondent to the agent's perceptions of the test environment, the agent-based approach generates twice as many effective tests than pseudo-random test generation. It is both scalable and efficient. Moreover, agents can be encoded to behave more naturally without compromising the effectiveness of test generation. Our results suggest that generating tests using testing agents significantly improves upon random and simultaneously provides more realistic driving scenarios.
 %
-Our results suggest that generating tests using testing agents allows engineers to reach edge cases and rare events more easily. %
+%Our results suggest that generating tests using testing agents allows engineers to reach edge cases and rare events more easily. %
 % GC:
-Our results suggest that generating tests using testing agents significantly improves upon random and simultaneously provides more realistic driving scenarios.
 
 % Simulation based verification for autonomous vehicles (AV) is beneficial for assessing otherwise dangerous or costly on-road testing. The multi-agent system (MAS) programming paradigm was used in the context of AV verification to explore the potential for test generation. Generating tests using autonomous agents has many benefits including scalability and engineering efficiency. We explore different agent behaviours towards the goal of assertion coverage through a simple example. By provoking behaviours based on the agents perceptions of the scenario we show that the agent-based test generation out-performs random agent actions by over 50\% in terms of test generation accuracy. MAS test generation shows promising results for simulation based verification allowing engineers to exploit edge cases and rare events more easily. 
 
@@ -55,13 +54,14 @@ Test Generation, Simulation, Autonomous Driving, Verification, Multi-Agent Syste
 
 %----------------------------------------------------------
 % What is verification
-\IEEEPARstart{V}{erification} is the process used to gain confidence in the correctness of a system wrt.\ its requirements~\cite{bergeron???}. Testing is a technique that can be used to achieve this by showing that the intended and actual behaviours of a system do not differ and detecting failures against the requirements in the process~\cite{utting2012taxonomy}.
+\IEEEPARstart{V}{erification} is the process used to gain confidence in the correctness of a system with respect to its requirements~\cite{bergeron2012writing}. Testing is a technique that can be used to achieve this by showing that the intended and actual behaviours of a system do not differ and detecting failures against the requirements in the process~\cite{utting2012taxonomy}.
 
 
 
 %----------------------------------------------------------
 % What is the role of testing
 % above
+% Actual quote is: "Verification is a process used to demonstrate that the intent of a design is preserved in its implementation", Bergeron.
 
 %----------------------------------------------------------
 % The principle of verification based testing
@@ -136,6 +136,7 @@ The experiment or test specification~\cite{ref to the paper with all the termino
 %----------------------------------------------------------
 % Summary
 
+
 %----------------------------------------------------------
 % MAS background and use of MAS for TG (morse, norway - in email from KE)
 \subsection{Multi-Agent System}
@@ -154,6 +155,9 @@ Automatically generating stimulus that will increase functional coverage is a ke
 % MAS Automated TG
 Combining the BDI framework with an automated test generation approach leads to the idea of a software agent capable of generating tests. Intelligent agents have been used in the human robot interaction (HRI) domain with a coverage feedback driven generation approach using reinforcement learning to explore collaborative manufacturing~\cite{Araiza-Illan2016}. The idea of a test agent has also been proposed by Enoiu et. al.,~\cite{Enoiu2019} for regression testing althouhg more for test selection than generation, where agents decide what tests to execute and with what prioritisation and include agent messaging.
 
+%----------------------------------------------------------
+% MAS Automated TG
+Hawkins et al.~\cite{Hawkins} use the Multi-Agent Simulator Of Neighbourhoods (MASON) platform to investigate situation coverage for an autonomous robot (AR). Rather than driving coverege tests that are required, the group use a situation space model to efficiently ensure parameter combinations are not repeated.
 
 %----------------------------------------------------------
 % lead from MAS background into literature
@@ -297,11 +301,12 @@ Ultimately the scoring should reflect the benefits of the methods against the ne
 The results section is split into 4 parts; Accuracy is the ratio of sucessfull tests the agents generated as a ratio of all tests, Score is a measure of how natural the agents behaved, Combined Score combines accuracy with score, and Time is how long the agents took to generate the test in both simulation ticks and wall clock time. Both Score and Time have distributions associated with them and as such confidence intervals are provided.
 
 
+
 %--------------------------------------------------------
 \subsection{Test Accuracy}
-Test generation accuracy, defined as the number of tests that have activated the pre-condition for the asserion as a ratio of all tests, are shown for each agent type in Fig.~\ref{Accuracy}. The \textit{random action} (RA) and \textit{random behaviour} (RB) have lower accuracy compared to directed agents when $nA<10$. For high $nA$ the accuracies converge mostly due to a saturation of agents (explained above).
+Test generation accuracy, defined as the number of tests that have activated the precondition for the asserion as a ratio of all tests, are shown for each agent type in Fig.~\ref{Accuracy}. The \textit{random action} (RA) and \textit{random behaviour} (RB) have lower accuracy compared to directed agents when $nA<10$. For high $nA$ the accuracies converge mostly due to a saturation of agents (explained above).
 %
-Fig.~\ref{Accuracy} also shows that for $nA=1$ a directed agent outperforms a random agent by more than 2:1. The \textit{election} agent generates a slightly higher accuracy than the \textit{proximity} agent but only by 2.2\%. However, for $nA=2$ and above the \textit{proximity} agent has a 10\% increase over the election agent which is because this agent has multiple attempts to trigger the pre-condition whereas the election agent only has one.
+Fig.~\ref{Accuracy} also shows that for $nA=1$ a directed agent outperforms a random agent by more than 2:1. The \textit{election} agent generates a slightly higher accuracy than the \textit{proximity} agent but only by 2.2\%. However, for $nA=2$ and above the \textit{proximity} agent has a 10\% increase over the election agent which is because this agent has multiple attempts to trigger the precondition whereas the election agent only has one.
 
 \todo[inline]{Agent density vs. accuracy - can be used to det how many agents required for map size}
 
@@ -316,7 +321,7 @@ Fig.~\ref{Accuracy} also shows that for $nA=1$ a directed agent outperforms a ra
 
 %--------------------------------------------------------
 \subsection{Test Score}
-For tests that activate the pre-condition the average agent score is compiled including 95\% confidence interval range, see Fig.~\ref{AgentScore}. The maximum theoretical score of any agent is 94 which includes 100 points for a successful test sub tracting a living cost of 1 and road penalty of 5. For a single agent scores between agent types are similar as accuracy is being controlled for by including only the successful tests. As the number of agents increases the random class diverge from the directed class and the variance in the random agent score increases. 
+For tests that activate the precondition the average agent score is compiled including 95\% confidence interval range, see Fig.~\ref{AgentScore}. The maximum theoretical score of any agent is 94 which includes 100 points for a successful test sub tracting a living cost of 1 and road penalty of 5. For a single agent scores between agent types are similar as accuracy is being controlled for by including only the successful tests. As the number of agents increases the random class diverge from the directed class and the variance in the random agent score increases. 
 
 \todo[inline]{why no variance for nA=1 in random? this is counter intuitive, it suggests random agents that succeed score only the highest value score!} As $nA$ increases for the random agents, the number of agents found on the road also increases and hence average score drops rapidly, whereas the directed class are only found crossing the road when they deem fit and are on the pavement at all other times keeping the score much higher.
 %
@@ -362,15 +367,29 @@ The \textit{election} agent has the highest combined score for $nA=1$ but higher
 
 
 %--------------------------------------------------------
-\subsection{Time}
-For each successful test geneated the reported time was averaged over $k$-tests and compared across different agent numbers, Fig.~\ref{Time}. The directed agents consistently improve over the time taken by the random class for $nA=1$ by around a single simulation tick and this trend continues as agent numbers increase. By $nA=20$ the directed agents are 1.85 simulation ticks faster than the random agents.
-Overall the \textit{proximity} agents find tests in the shortest time.
+\subsection{Time to generate test}
+For each successful test generated the reported time was averaged over $k$-tests and compared across different agent numbers, Fig.~\ref{Time}. 
+
+The directed agents consistently improve over the time taken by the random class for $nA=1$ by around a single simulation tick and this trend continues as agent numbers increase. By $nA=20$ the directed agents are 1.85 simulation ticks faster than the random agents. Overall the \textit{proximity} agents find tests in the shortest time.
 
 \begin{figure}[!t]
 	\centering
 \includegraphics[width=0.48\textwidth]{Time.pdf}
 	\caption{The average time taken for an agent to find a successful tests.}
 	\label{Time}
+\end{figure}
+
+\todo[inline]{change time y-axis to sim ticks not seconds, remove valid, add wall clock time to second y-axis, add error bars to time}
+
+%--------------------------------------------------------
+\subsection{Agent CPU Time}
+For each test generated the met the precondition, the CPU time taken to execute the agent action was averaged over the $k$-tests and compared across different agent types and numbers, Fig.~\ref{CPUTime}. This is essentially how much additional CPU time is required to execute the actions of a random agent over a more commplex one.
+
+\begin{figure}[!t]
+	\centering
+\includegraphics[width=0.48\textwidth]{TimeCPU.pdf}
+	\caption{The CPU time taken to execute the agent actions averaged over 1000 tests. The more complex agents have additional CPU overhead compared to random but this difference is relatively unchaged with agent numbers.}
+	\label{CPUTime}
 \end{figure}
 
 \todo[inline]{change time y-axis to sim ticks not seconds, remove valid, add wall clock time to second y-axis, add error bars to time}
@@ -396,13 +415,28 @@ indicating that for a small investment the \textit{random action} agent can be i
 This also raises the question of how comlex the agents sould be? The analysis above would suggest that the level of agent complexity should be considered carefully as a simpler level of intelligence could be more beneficial. %
 
 
+\begin{table*}
+\centering
+\caption{Test agent summary table and sample of results for $nA=3$.}
+\label{ResultsTable}
+\begin{tabular}{|c||p{7cm}|c|c|c|c|}
+\hline
+Method & Description & Accuracy & Combined Score & Code Lines & AE-CPU time \\
+\hline
+Random Action & Randomly perform action (up, down, left, right, stop). & 42.7 & 0.254 & 000& 0.09 \\
+Random Behaviour & Walk along pavement, randomly cross the road & 56.0 & 0.287 & 000& 0.08 \\
+Proximity & Walk along pavement, Cross road when AV in range & 85.5 & 0.540 & 000& 0.37 \\
+Election & As in Proximity but elect a single agent to cross & 71.7 & 1.470 & 000&0.49\\
+\hline 
+\end{tabular}
+\end{table*}
 
 
 %----------------- Conclusion ---------------------------
 \section{Conclusion}
 The MAS programming paradigm offers rational agency and strategic planning to software agents that have been exploited in this research for test generation. 
 %
-On a small example we show that, by encoding a variety of different behaviours respondent to the agent's perceptions of the test environment, the agent-based approach generates twice as many effective tests than pseudo-random test generation and agents can be encoded to behave more realistically without compromising the effectiveness of test generation. %
+On a small example we show that, by encoding a variety of different behaviours respondent to the agent's perceptions of the test environment, the agent-based approach generates twice as many effective tests than a pseudo-random approach. Furthermore, agents can be encoded to behave more realistically without compromising their effectiveness. %
 % I think this shouldbe changed  to state:
 % Our results suggest that generating tests using testing agents allows engineers to reach edge cases and rare events more easily.
 Our results suggest that generating tests using testing agents significantly improves upon random and simultaneously provides more realistic driving scenarios.
@@ -436,3 +470,8 @@ This work was performed under the framework of the ROBOPILOT and CAPRI project
 \printbibliography[heading=none]
 \end{document}
 
+
+
+% ensure readeris aware it is a fake AV not a real one
+% map has non-traversible boundaries, no agents lost or created, define situation/scenario in terms of each test
+% test can be regenerated exactly due to seed control
