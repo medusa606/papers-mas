@@ -242,8 +242,8 @@ Rocklage et al.~\cite{Rocklage2017} approach the problem of test generation from
 
 %------------------- Natural Behaviour vs. Edge Case ----------------------
 \subsection{Natural Behaviour vs. Edge Case}
-Natural = waiting for interesting event, Edge case = find only interesting events.
-One could argue that the simulation environment presented to the AV should be as close to the real world it seeks to emulate as the most realistic proving ground. In this case such efforts seek to reduce the \textit{reality gap}~\cite{Jakobi1995} providing the most likely scenarios and actor behaviour. One approach is to monitor real traffic scenarios from traffic monitoring cameras, tracking individual vehicles, cyclists and pedestrians and from these build behavioural models for each road scene for which you have traffic data~\cite{latentlogic}. 
+\todo[inline]{Natural = waiting for interesting event, Edge case = find only interesting events.}
+One could argue that the simulation environment presented to the AV should be as close to the real world it seeks to emulate as the most realistic proving ground. In this case such efforts seek to reduce the \textit{reality gap}~\cite{Jakobi1995} providing the most likely scenarios and actor behaviour. One approach is to monitor real traffic scenarios from traffic monitoring cameras, tracking individual vehicles, cyclists and pedestrians and from these build behavioural models for each road scene for which you have traffic data~\cite{latentlogic waiting for email reply}. 
 
 
 %--------------------------------------------------------
@@ -363,7 +363,7 @@ Fig.~\ref{Accuracy} also shows that for $nA=1$ a directed agent outperforms a ra
 
 
 %--------------------------------------------------------
-\subsection{Test Score}
+\subsection{Test Score} \label{testscore}
 For tests that activate the precondition the average agent score is compiled including 95\% confidence interval range, see Fig.~\ref{AgentScore}. The maximum theoretical score of any agent is 94 which includes 100 points for a successful test sub tracting a living cost of 1 and road penalty of 5. For a single agent scores between agent types are similar as accuracy is being controlled for by including only the successful tests. As the number of agents increases the random class diverge from the directed class and the variance in the random agent score increases. 
 
 % \todo[inline]{why no variance for nA=1 in random? this is counter intuitive, it suggests random agents that succeed score only the highest value score!} 
@@ -387,7 +387,7 @@ No significant dfference between the directed class is seen in the score even wi
 
 %--------------------------------------------------------
 \subsection{Combined Score}
-As the score (above section xx.xx) controls for accuracy it can be misleading to interpret these results so a combined score is provided which is given by 1x10-3 * score * accuracy. This combined measure promotes scores that are attached to high accuracies, describing agents that can generate useful tests with natural pedestrian behaviour. Time could have been included as a numerator here but is similar in scope to the living penalty so not included.%
+As the score above (section \ref{testscore}) only shows tests that meet the precondition, it can be easy to interpret these results as overly optimistic so a \textit{combined score} is provided which is given by (score * accuracy / 1000). This combined measure promotes scores that are attached to high accuracies, describing agents that can generate useful tests with natural pedestrian behaviour. Time could also ave been included as a denominator here but is not as is accounted for in the living cost penalty.%
 %
 The normalised results, Fig~\ref{Combined}, show that the directed agents are over twice as effective within this new combined definition than random agents for $nA=1$ although this advanted drops rapidly with increasing agent numbers to reach a steady gap of around 12\%.
 %
@@ -426,16 +426,17 @@ For each test generated the met the precondition, the CPU time taken to execute 
 %---------------- Results Table -------------------------
 \begin{table*}
 \centering
-\caption{Test agent summary table and sample of results for $nA=3$.}
+\caption{Test agent summary table showing description and number of lines of code ($CL$) for each agent and sample of results: Accuracy, Combined Score ($CS$), CPU Time ($t_{CPU}$) and Test Generation Time (TGT) for $nA=3$.}
 \label{ResultsTable}
-\begin{tabular}{|c||p{7cm}|c|c|c|c|}
+\begin{tabular}{|l|p{6.2cm}|c||c|c|c|c|}
 \hline
-Method & Description & Accuracy & Combined Score & Code Lines & CPU time (s) \\
+\textbf{Method} & \textbf{Agent Description} & $CL$ & Accuracy & $CS$ &  $t_{CPU}$ (s) & $TGT$ \\
+% \textbf{Method} & Agent Description & $CL$ & Accuracy & $CS$ &  $t_{CPU}$ (s) & $TGT$ \\
 \hline
-Random Action & Randomly perform action (up, down, left, right, stop). & 42.7 & 0.254 & 23& 0.09 \\
-Random Behaviour & Walk along pavement, randomly cross the road & 56.0 & 0.287 & 82& 0.08 \\
-Proximity & Walk along pavement, Cross road when AV in range & 85.5 & 0.540 & 86& 0.37 \\
-Election & As in Proximity but elect a single agent to cross & 71.7 & 1.470 & 235&0.49\\
+Random Action & Randomly perform action (up, down, left, right, stop). 	&  23& 42.7 & 0.254 & 0.09 & 9.11 \\
+Random Behaviour & Walk along pavement, randomly cross the road 		&  82& 56.0 & 0.287 & 0.08 & 8.83 \\
+Proximity & Walk along pavement, Cross road when AV in range 			&  86& 85.5 & 0.540 & 0.37 & 6.79 \\
+Election & As in Proximity but elect a single agent to cross 			& 235& 71.7 & 1.470 & 0.49 & 6.59 \\
 \hline 
 \end{tabular}
 \end{table*}
@@ -447,7 +448,7 @@ Election & As in Proximity but elect a single agent to cross & 71.7 & 1.470 & 23
 \subsection{Time to generate test}
 % Return on investment.
 For each successful test generated the reported time was averaged over $k$-tests and compared across different agent numbers, Fig.~\ref{Time}. 
-
+%
 The directed agents consistently improve over the time taken by the random class for $nA=1$ by around a single simulation tick and this trend continues as agent numbers increase. By $nA=20$ the directed agents are 1.85 simulation ticks faster than the random agents. Overall the \textit{proximity} agents find tests in the shortest number of simulation steps.
 
 \begin{figure}[!t]
@@ -461,37 +462,46 @@ The directed agents consistently improve over the time taken by the random class
 
 
 
-
 %--------------------------------------------------------
 \subsection{Results Analysis}
-\todo[inline]{discuss how the test show compliance against the `good test case' description in the intro: Accuracy is not precisely detecting defects in this case but the AV is put inot a situation where this is tested, Agent CPU is a resource metric = ecomonic, TTGT also economic but more a `return on investment' with efficiency. Agent score can be considered as the evolvable attribute as agents with a high score should do well in other environments (road layouts here) and still maintain realistic behaviour. The only attribute not covered is exemplary as in this case study only a single assertion is considered.}
+% \todo[inline]{discuss how the test show compliance against the `good test case' description in the intro: Accuracy is not precisely detecting defects in this case but the AV is put inot a situation where this is tested, Agent CPU is a resource metric = ecomonic, TTGT also economic but more a `return on investment' with efficiency. Agent score can be considered as the evolvable attribute as agents with a high score should do well in other environments (road layouts here) and still maintain realistic behaviour. The only attribute not covered is exemplary as in this case study only a single assertion is considered.}
 \todo[inline]{Agent density vs. accuracy - can be used to det how many agents required for map size}
 
-We now assess the results aginst the criterea of a `good' test case as described in~\cite{fewster1999software}:
+The results are assessed aginst the criterea of a `good' test case as described in~\cite{fewster1999software}.
 \begin{itemize}
-	\item \textit{Effective}: How effective is the method at generating test cases that detect faults with the responder? The Accuracy metric, defined above, shows how often the agent generates a test case that satisfies the precondition of the assertion and will therefore reveal, or is likely to reveal, defects of the DUT. It shows that a small number of directed agents are around twice as effective as random ones and over three times as effective for a single agent.
+	\item \textit{Effective}: How effective the method is at generating test cases that detect faults with the responder. The Accuracy metric, defined above, shows how often the agent generates a test case that satisfies the precondition of the assertion and will therefore reveal, or is likely to reveal, defects of the DUT. Fig.~\ref{Accuracy} shows that a small number of directed agents are around twice as effective as random ones and over three times as effective for a single agent.
+	%
 	\item \textit{Exemplary}: An exemplary test case will test multiple aspects of the DUT thereby reducing the number of tests. In this case study, only a single assertion was used so this criteria cannot be assessed although it is a key development for future work discussed in Section~\ref{future}.
-	\item \textit{Economic}: How costly the test case is to run, analyse and debug. 
-	\item \textit{Evolvable}:
+	%
+	\item \textit{Economic}: How costly the test case is to run, analyse and debug. The resource cost (CPU time) to execute the agent actions, Fig~\ref{CPUTime} is 4-5 times more expensive for the directed agents than random. An example of the actual values are given in Table~\ref{ResultsTable} $nA=3$, see heading CPU Time. This may be a significant factor in your decision to use an intelligent agent for test generation unless you have abundent CPU resources to hand. %
+	%
+	However, the test generation time, Fig~\ref{Time}, indicates that on average the directed agents find test cases that activate the precondition faster than random in terms of simulation ticks. Therefore, although more resource is allocated to the directed agents they find tests faster overall due to better efficiency, i.e. better return on investment (ROI).
+	%
+	\item \textit{Evolvable}: The maintenance required to adapt the test case to new software changes or \textit{scenes} in our case. In the case study each test generated is of a different scene as the agent position is randomly generated each time. Therefore the directed agents show adapability to new scenes and this attribute is accounted for within the accuracy. This case study could be easily shown to succeed with different road layouts, vehicle speeds, see Section~\ref{future}.
+\end{itemize}
+
+% \todo[inline]{Do we need to add a new category to this list Eathly, Existent (def.=having reality), Embodied?-  level of natural or expected behaviour? Test cases generated may be both valid and interesting but not realistic - how do we control for this? do we need to? or does it not matter?}
+
+Further to this list of attributes, some generated tests may be \textit{valid} and \textit{interesting} but may not be \textit{realistic} i.e. a \textit{valid} test could technically happen but might never occur in reality. For example, a test that generated a vehicle driving in a river or parked on a building are invalid however a car driving the wrong way down a motorway/highway is valid but unrealistic. %
+\todo[inline]{Or is this just an example of an extreme edge case? Comments welome here as i'm not convinced of my own arguemnt! I suppose if you can you generate the same test in multiple ways then you should choose one that is more realistic.} %
+Therefore the category \textit{Existent} should be added:
+\begin{itemize}
+	\item \textit{Existent}: The level of reality of the test case beyond simply being valid. Agents in this case study are penalised for walking in the road, see Fig.~\ref{AgentScore}.
+	\item or...
+	\item \textit{Existent}: Test cases should promote realistic scenarios or if competing valid cases exist then deference should be given to the more realistic one. Agents in this case study are penalised for walking in the road, see Fig.~\ref{AgentScore}.
 \end{itemize}
 
 
 The results show that by nearly all the metrics and parameter combinations discussed above, (accuracy, natural behaviour score, test generation time) the directed agents outperform the random agents. This shows that even a small amount of intelligence can be a distinct advantage over random techniques. 
 %
-But what was the cost of developing these agent behaviours?
-And is there a limited payoff to gain significantly superior intelligence for really complex agent behaviour? %
-%
-Comparing the lines of code for the agent action definition can help to weigh the investment in agent complexity. Lines of code for each are below and the combined score for $nA=1$ is in brackets:
-\todo[inline]{Remove this list and refer to the table}
-\begin{itemize}
-  \item \textit{random action} = 23 (0.35),
-  \item \textit{random behaviour} = 82 (0.45),
-  \item \textit{proximity} = 86 (0.96),
-  \item \textit{election} = 235 (1.0) 
-\end{itemize}
-indicating that for a small investment the \textit{random action} agent can be improved significantly with 4x the initia code to improve it's combined score to near the theoretical maximal. To improve further with the \textit{election} agent took 10x the initial code with minmal score improvement suggesting this was not worth the investment and also considering for $nA>1$ \textit{proximity} proved more effective.
 
-This also raises the question of how comlex the agents sould be? The analysis above would suggest that the level of agent complexity should be considered carefully as a simpler level of intelligence could be more beneficial. %
+% This need to be added to the economic alanysis above
+But what was the cost of developing these agent behaviours and is there a limited payoff to gain significantly superior intelligence for really complex agent behaviour? %
+%
+Comparing the lines of code for each agent can help to weigh the investment in agent complexity, see lines of code ($CL$) in Table~\ref{ResultsTable}. This shows that for a small investment the \textit{random action} agent with 23 lines of code can be improved significantly with (86 lines) to improve it's combined score and test generatio time (TGT). To improve the combined score further with the \textit{election} agent took 10x the \textit{random action} code with lower overall accuracy but better combined score suggesting this was not worth the investment.
+
+% This also raises the question of how comlex the agents sould be? 
+This analysis above would suggest that the level of agent complexity should be considered carefully as a simpler level of intelligence could be more beneficial than very complex one which may also required additional investment in debugging.
 
 
 
@@ -504,13 +514,13 @@ The MAS programming paradigm offers rational agency and strategic planning to so
 On a small example we show that, by encoding a variety of different behaviours respondent to the agent's perceptions of the test environment, the agent-based approach generates twice as many effective tests than a pseudo-random approach. Furthermore, agents can be encoded to behave more realistically without compromising their effectiveness. %
 % I think this shouldbe changed  to state:
 % Our results suggest that generating tests using testing agents allows engineers to reach edge cases and rare events more easily.
-Our results suggest that generating tests using testing agents significantly improves upon random and simultaneously provides more realistic driving scenarios.
+Our results suggest that generating tests using testing agents is a promising avenue of research and has been shown to significantly improves upon random whilst simultaneously providing more realistic driving scenarios.
 
 
 
 \subsection{Future Work} \label{future}
 %
-In this small case study there is only a single assertion considered. But how agents behave when multiple assertions or \textit{desires} exist will be key to the success of this method. This could be achieved with a number of methods such as MDP and ANN.
+In this small case study there is only a single assertion considered. But how agents behave when multiple assertions or \textit{desires} exist will be key to the success of this method. This could be achieved with a number of methods such as MDP and ANN. Furthermore, testing the agents in a variety of different scenes (e.g. different road network) would further validate the directed agent approach.
 %
 As discussed in~\cite{Eder2007} agents that have their goal selection modified based on coverage feedback would be an important step in this direction. This also fits in with the feedback reward of many such architectures, e.g. rewards for MDP~\cite{littman1994markov} and backpropagation for ANN~\cite{foerster2016learning}. 
 
@@ -519,9 +529,10 @@ Composing agents with a feature based representation of their environment is als
 % Agents online adaptability to AV behaviour (robustness)
 Including personality to agents is also another avenue that could provide insightful as a tuning parameter~\cite{Zoumpoulaki2010}. Conventionally agressive (or egoist) behaviour may seem the most interesting as edge cases and therefore require oversampmling. But there could also be merit in exploring more risk-advers behaviours or simply in understanding what normative driving conditions are as a baseline for CAV cyber security. 
 %
-There is also the possibility to have have combination of random and directed agents to ensure the initial coverage is satisfied, then add more intelligent agents for hole coverage.
+There is also the possibility to have have combination of random and directed agents to ensure the initial 80\% of coverage is satisfied quickly then add more intelligent agents for hole coverage.
 
-Code used in this analysis is available at \url{https://github.com/TSL-UOB/CAV-MAS}.
+Code %used in this analysis is 
+available at \url{github.com/TSL-UOB/CAV-MAS}.
 
 
 %----------------- Acknowledgment ---------------------------
