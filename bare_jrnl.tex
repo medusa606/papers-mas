@@ -86,7 +86,7 @@ This figure is based on the number of people killed on roads in the US and is th
 %
 
 So is there a way to achieve confidence in the design without millions of miles of driving or billions of miles of simulated driving~\cite{korosec2019waymo}? %
-Furthermore, is on-road testing really suitable if the goal is to ensure the AV handles rare events appropriately when such events will be witnessed inefficiently by chance~\cite{Koopman2018}?
+Furthermore, is on-road testing really suitable if the goal is to ensure the AV handles rare events appropriately when such events will be witnessed inefficiently by chance~\cite{Koopman2018}.
 %
 % For the public to gain trust in autonomous vehicles (AV), the manufacturers must demonstrate that their AVs comply with, amongst many things, road safety requirements. 
 % While on-road testing will contribute significantly towards AV verification, testing in simulation has complimentary benefits as it offers a safe and effective environment. 
@@ -465,8 +465,16 @@ The directed agents consistently improve over the time taken by the random class
 %--------------------------------------------------------
 \subsection{Results Analysis}
 \todo[inline]{discuss how the test show compliance against the `good test case' description in the intro: Accuracy is not precisely detecting defects in this case but the AV is put inot a situation where this is tested, Agent CPU is a resource metric = ecomonic, TTGT also economic but more a `return on investment' with efficiency. Agent score can be considered as the evolvable attribute as agents with a high score should do well in other environments (road layouts here) and still maintain realistic behaviour. The only attribute not covered is exemplary as in this case study only a single assertion is considered.}
-
 \todo[inline]{Agent density vs. accuracy - can be used to det how many agents required for map size}
+
+We now assess the results aginst the criterea of a `good' test case as described in~\cite{fewster1999software}:
+\begin{itemize}
+	\item \textit{Effective}: How effective is the method at generating test cases that detect faults with the responder? The Accuracy metric, defined above, shows how often the agent generates a test case that satisfies the precondition of the assertion and will therefore reveal, or is likely to reveal, defects of the DUT. It shows that a small number of directed agents are around twice as effective as random ones and over three times as effective for a single agent.
+	\item \textit{Exemplary}: An exemplary test case will test multiple aspects of the DUT thereby reducing the number of tests. In this case study, only a single assertion was used so this criteria cannot be assessed although it is a key development for future work discussed in Section~\ref{future}.
+	\item \textit{Economic}: How costly the test case is to run, analyse and debug. 
+	\item \textit{Evolvable}:
+\end{itemize}
+
 
 The results show that by nearly all the metrics and parameter combinations discussed above, (accuracy, natural behaviour score, test generation time) the directed agents outperform the random agents. This shows that even a small amount of intelligence can be a distinct advantage over random techniques. 
 %
@@ -500,7 +508,7 @@ Our results suggest that generating tests using testing agents significantly imp
 
 
 
-\subsection{Future Work}
+\subsection{Future Work} \label{future}
 %
 In this small case study there is only a single assertion considered. But how agents behave when multiple assertions or \textit{desires} exist will be key to the success of this method. This could be achieved with a number of methods such as MDP and ANN.
 %
@@ -521,7 +529,7 @@ Code used in this analysis is available at \url{https://github.com/TSL-UOB/CAV-M
 The ROBOPILOT and CAPRI projects are part-funded by the Centre for Connected and Autonomous Vehicles
 (CCAV), delivered in partnership with Innovate UK. It is part of the government’s £100 million
 Intelligent Mobility Fund, supporting the Future of Mobility Grand Challenge. %
-(Innovate UK, Grant no.s 103703 and 103288 respectively). 
+Innovate UK, Grant numbers 103703 and 103288 respectively. 
 
 % We gratefully acknowledge the support of NVIDIA Corporation with the donation of a Titan Xp GPU used for this research.
 
