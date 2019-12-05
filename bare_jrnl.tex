@@ -35,7 +35,7 @@ Kerstin Eder$^{1}$%~\IEEEmembership{Senior Member,~IEEE},
 \maketitle
 
 \begin{abstract}
-Simulation-based verification is beneficial for assessing otherwise dangerous or costly on-road testing of autonomous vehicles (AV). This paper addresses the challenge of efficiently generating effective tests for simulation-based AV verification using software testing agents. The multi-agent system (MAS) programming paradigm offers rational agency, causality and strategic planning between multiple agents. We exploit these aspects for test generation, focusing in particular on the generation of tests that trigger preconditions of assertions. On a small example we show that, by encoding a variety of different behaviours respondent to the agent's perceptions of the test environment, the agent-based approach generates twice as many effective tests than pseudo-random test generation. It is both scalable and efficient. Moreover, agents can be encoded to behave more naturally without compromising the effectiveness of test generation. Our results suggest that generating tests using testing agents significantly improves upon random and simultaneously provides more realistic driving scenarios.
+Simulation-based verification is beneficial for assessing otherwise dangerous or costly on-road testing of autonomous vehicles (AV). This paper addresses the challenge of efficiently generating effective tests for simulation-based AV verification using software testing agents. The multi-agent system (MAS) programming paradigm offers rational agency, causality and strategic planning between multiple agents. We exploit these aspects for test generation, focusing in particular on the generation of tests that trigger preconditions of assertions. On the example of a key assertion we show that, by encoding a variety of different behaviours respondent to the agent's perceptions of the test environment, the agent-based approach generates twice as many effective tests than pseudo-random test generation, while being  both scalable and efficient. Moreover, agents can be encoded to behave naturally without compromising the effectiveness of test generation. Our results suggest that generating tests using testing agents significantly improves upon random and simultaneously provides more realistic driving scenarios.
 %
 %Our results suggest that generating tests using testing agents allows engineers to reach edge cases and rare events more easily. %
 % GC:
@@ -61,32 +61,62 @@ Test Generation, Simulation, Autonomous Driving, Verification, Multi-Agent Syste
 %----------------------------------------------------------
 % What is the role of testing
 % above
-% Actual quote is: "Verification is a process used to demonstrate that the intent of a design is preserved in its implementation", Bergeron.
+% Actual quote is: "Verification is a process used to demonstrate that the intent of a design is preserved in its implementation", [Bergeron].
 
 %----------------------------------------------------------
 % The principle of verification based testing
-Testing autonomous driving functions and safety critical scenarios in simulation can benefit from a fully controlled environment where road layouts, weather conditions and other %traffic participants
+Using simulation to test autonomous driving functions in safety critical scenarios benefits from full control over the environment, where road layouts, weather conditions, a variety of road users and other %traffic participants
 driving scenario parameters 
 can be directed to achieve specific test targets. %
 %
 % These tests may look to convince auditors of the functional safety of the vehicle or whether it complies with commonly agreed upon road conduct, such as the Vienna convention~\cite{ViennaConv}, interpreted locally by each country, e.g.\ the UK Highway Code~\cite{codes2011highway}. In addition, there are also road traffic laws and penalties, e.g.~\cite{RoadTraffic1988}, and unwritten rules or social conventions~\cite{}. 
 %
-These tests may look to convince auditors of the functional safety of the vehicle or whether it complies with commonly agreed upon road conduct, such as the Vienna convention~\cite{ViennaConv}, interpreted locally by each country as a set of rules~\cite{codes2011highway} and road traffic laws and penalties~\cite{RoadTraffic1988}.
+These tests may aim to provide evidence to regulators of the functional safety of the vehicle or its compliance with commonly agreed upon road conduct, such as the Vienna convention~\cite{ViennaConv}, typically implemented at national level as a set of rules~\cite{codes2015highway}, road traffic laws and penalties~\cite{RoadTraffic1988}.
 %
 %These may be culturally or geographically different, e.g.\ flashing headlights to override junction priorities to give way to another driver.
 
 
 %----------------------------------------------------------
-% The (automated) Test Generation challenge
-Verification of autonomous vehicle face the same challenges as other complex systems, e.g. semiconductor hardware, where it has been recognised that verification can take up to 70\% of the design effort~\cite{arden2002international} and exhaustive testing is intractabe due to vast parameter space.
+% The Test Generation challenge and its automation
+Verification of complex systems is challenging. In semiconductor design, for
+example, it has long been recognised that verification can take up to 70\% of
+the design effort~\cite{arden2002international}, with the largest part still
+being achieved with simulation-based techniques. 
 %
-Estimates vary but demonstrating autonomous vehicle safety with a 95\% confidence that the failure rate is at most 1.09 fatalities per 100 million miles driven would take 275 million miles, equivalent to 12.5 years for a fleet of 100 AVs~\cite{kalra2016driving}. %
-%
-This figure is based on the number of people killed on roads in the US and is therefore somewhat arbitrary as the criteria will therefore be proportional to overall driving safety in each country, e.g. UK road fatalities per billion vehicle-km is half that of the US in 2018~\cite{ITFroadSafety2018}.
-%
+The testbench is the code used to drive a stimulus sequence into the Design
+under Verification (DUV) while observing input protocols. It also records
+coverage and checks the DUV's response. The testbench provides a completely
+closed environment from the DUV's perspective. Simulators are used to execute
+testbenches. Automation plays a critical role in achieving verification targets
+efficiently and effectively.
 
-So is there a way to achieve confidence in the design without millions of miles of driving or billions of miles of simulated driving~\cite{korosec2019waymo}? %
-Furthermore, is on-road testing really suitable if the goal is to ensure the AV handles rare events appropriately when such events will be witnessed inefficiently by chance~\cite{Koopman2018}.
+Coverage-driven verification is a systematic, goal-directed simulation-based
+verification method~\cite{HVC2015} that offers a high degree of automation and
+is capable of exploring systems of realistic detail under a broad range of
+environment conditions.
+%
+Because exhaustive simulation is intractabe due to the vast parameter space,
+the remaining challenge is in strategically selecting the (ideally smallest set
+of) test cases that result in the highest level of confidence in the design's
+correctness.
+%
+Automating test generation has been the focus of research for decades, giving
+rise to a variety of coverage-directed stimulus generation techniques that
+exploit formal methods, genetic programming and machine learning~\cite{Ioannides:2012}. 
+
+Compared to semiconductor design verification, AV verification faces even bigger challenges, including automatic test generation. 
+%
+It is well known that few of the valid tests are actually interesting from a verification point of view. 
+Estimates vary, but demonstrating AV safety with a confidence of 95\% that the failure rate is at most 1.09 fatalities per 100 million miles driven would take 275 million miles, equivalent to 12.5 years for a fleet of 100 AVs~\cite{kalra2016driving}. %
+%
+This figure is based on the number of roads fatalities in the US, and would
+need to be adjusted taking into consideration local statistics on raod safety,
+e.g.\ the number of road fatalities per billion vehicle-km in the UK has been
+half that of the US in 2018~\cite{ITFroadSafety2018}.
+%
+Ways must be found to test the scenarios of interest without needing millions of miles of driving or billions of miles of simulated driving~\cite{korosec2019waymo}.
+%
+In particular, simulation offers the opportunity to increase the number of otherwise rare events~\cite{Koopman2018} in order to determine whether the AV handles such rare events appropriately. 
 %
 % For the public to gain trust in autonomous vehicles (AV), the manufacturers must demonstrate that their AVs comply with, amongst many things, road safety requirements. 
 % While on-road testing will contribute significantly towards AV verification, testing in simulation has complimentary benefits as it offers a safe and effective environment. 
@@ -98,7 +128,7 @@ Furthermore, is on-road testing really suitable if the goal is to ensure the AV 
 \begin{figure}[!t]
 	\centering
 \includegraphics[width=0.48\textwidth]{taxonomy.png}
-	\caption{Taxonomy of model-based test generation, from \cite{utting2012taxonomy}}
+	\caption{Taxonomy of model-based test generation, from~\cite{utting2012taxonomy}}
 	\label{taxonomy}
 \end{figure}
 
@@ -537,10 +567,10 @@ available at \url{github.com/TSL-UOB/CAV-MAS}.
 
 %----------------- Acknowledgment ---------------------------
 \section*{Acknowledgment}
-The ROBOPILOT and CAPRI projects are part-funded by the Centre for Connected and Autonomous Vehicles
-(CCAV), delivered in partnership with Innovate UK. It is part of the government’s £100 million
-Intelligent Mobility Fund, supporting the Future of Mobility Grand Challenge. %
-Innovate UK, Grant numbers 103703 and 103288 respectively. 
+This research has in part been funded by the ROBOPILOT and CAPRI projects. Both
+projects are part-funded by the Centre for Connected and Autonomous
+Vehicles (CCAV), delivered in partnership with Innovate UK under grant numbers
+103703 (CAPRI) and 103288 (ROBOPILOT), respectively.
 
 % We gratefully acknowledge the support of NVIDIA Corporation with the donation of a Titan Xp GPU used for this research.
 
