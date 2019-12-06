@@ -110,7 +110,7 @@ It is well known that few of the valid tests are actually interesting from a ver
 Estimates vary, but demonstrating AV safety with a confidence of 95\% that the failure rate is at most 1.09 fatalities per 100 million miles driven would take 275 million miles, equivalent to 12.5 years for a fleet of 100 AVs~\cite{kalra2016driving}. %
 %
 This figure is based on the number of roads fatalities in the US, and would
-need to be adjusted taking into consideration local statistics on raod safety,
+need to be adjusted taking into consideration local statistics on road safety,
 e.g.\ the number of road fatalities per billion vehicle-km in the UK has been
 half that of the US in 2018~\cite{ITFroadSafety2018}.
 %
@@ -163,13 +163,13 @@ A good test case should be \textit{effective} (at detecting defects), \textit{ef
 
 
 % Test generation taxonomy
-The agent based test generation technique will sit alongside and complement the techniques in the existing verification taxonomy~\cite{utting2012taxonomy}. The new method will form a new leaf node at the Test Generation-Technology branch of the existing taxonomy of model-based test generation, Fig~\ref{taxonomy}. %
+The agent based test generation technique will sit alongside and complement the techniques in the existing verification taxonomy~\cite{utting2012taxonomy}. The new method will form a new leaf node at the Test Generation-Technology branch of the existing taxonomy of model-based test generation, Fig.~\ref{taxonomy}. %
 %
 This work proposes using an agent based model for test generation. This fits in within the existing taxonomy of model-based testing \cite{utting2012taxonomy} under the test generation - technology branch.
 % \todo[inline]{more/stronger motivation - why agents? what is the challenge/problem?}
 
 % \todo[inline]{mention how there are formal and informal rules of the road, both of which are valid tests Regulators would use the former to assess the safety case for the vehicle, whereas public opinion may be persuaded more by compliance of the latter. Trustworthiness will certainly be composed of both aspects of differing proportions depending on the audience.}
-
+	
 
 %----------------------------------------------------------
 % Test Bench Architecture
@@ -301,7 +301,9 @@ This is a conceptual proof and not a complete verification process, choosing onl
 %------------------- Method -----------------------------
 \section{Case Study} \label{CaseStudy}
  
-This section describes a case study to explore the proposed test generation method. The aim is to generate tests that exercise the precondition for a single assertion: collision avoidance. The precondition in this case states that for the associated decision making process in the AV to be exercised an entity in the path of the vehicle should be avoided either by braking or manouvering.  A single assertion is chosen to isolate assessment of the test generation concept and not a demonstrate a complete verification process. The assertion chosen in this example is collision avoidance with a pedestrian and a successful test would be when the pedestrian enters the emergency braking zone of the DUT, i.e. within a 1s time-to-collision (TTC) window of the leading edge of the vehicle. The outcome of the test and the behaviour of the AV are not the focus here, but that tests are generated using the agent framework that satisfy the precondition for the assertion. 
+This section describes a case study to explore the proposed test generation method.%
+\footnote{ Code used is available at \url{github.com/TSL-UOB/CAV-MAS}.} %
+The aim is to generate tests that exercise the precondition for a single assertion: collision avoidance. The precondition in this case states that for the associated decision making process in the AV to be exercised an entity in the path of the vehicle should be avoided either by braking or manouvering.  A single assertion is chosen to isolate assessment of the test generation concept and not a demonstrate a complete verification process. The assertion chosen in this example is collision avoidance with a pedestrian and a successful test would be when the pedestrian enters the emergency braking zone of the DUT, i.e. within a 1s time-to-collision (TTC) window of the leading edge of the vehicle. The outcome of the test and the behaviour of the AV are not the focus here, but that tests are generated using the agent framework that satisfy the precondition for the assertion. 
 
 %------------------- Test Agents -----------------------------
 \subsection{Test Agents}
@@ -328,9 +330,9 @@ The assumed AV velocity is 20 mph which is equivalent to 9.1 m/s that is rounded
 
 The AV travels along the left hand lane of the road starting at cell $y=0$ and travelling to the end, cell $y=66$. If the assertion is triggered or the AV reaches the end of the road then the test is restarted. The AV occupies an area 4.5x3m equivalent to 4x2 cells. There are no other vehicles and the right hand side of the road is unoccupied.
 
-The environment is initialised with the agents spawned randomly on any valid pavement area (see note below). When the environment is reset new random locations are set for the agents. Control over random locations are set using a fixed seed based on the experiment number (1-1000) and so tests are repeatable between agent types, i.e. An experiment with 5 agents using a random method with have the same starting locations as using any other method which ensures valid comparison between agent types.
+The environment is initialised with the agents spawned randomly on any valid pavement area (see note below). When the environment is reset new random locations are set for the agents. Control over random locations are set using a fixed seed based on the experiment number and so tests are repeatable between agent types, i.e. An experiment with 5 agents using a random method with have the same starting locations as using any other method which ensures valid comparison between agent types.
 
-Valid test if agent found in 'braking zone' of the ave which extends 6 units forwards of the leading edge of the vehicle. Any agent found in this area is defined as a valid test and the environment is reset.
+The precondition is activated if an agent is found in the `braking zone' of the AV which extends 6 units forwards of the leading edge of the vehicle,~Fig.\ref{gridRoad}. %Any agent found in this area is defined as a valid test and the environment is reset.
 
 Some areas of the environment are impossible for the agents to intersect the AV and are therefore invalid spawn locations. On the left hand-side of the left pavement a pedestrian needs to move three cells to the right to reach the left part of the centre of the left lane. This is equivalent to three seconds. In this time the AV crosses 18 units. Therefore, the first 18 cells of the left-hand side of the left pavement are dead-zone where pedestrians cannot intersect the car if spawn inside this zone. Similarly, the first 12 cells of the right-hand side of the left pavement, the first 36 cells of the left-hand side of the right pavement and the first 54 cells of the right-hand side of the right pavement are all invalid spawn locations. 
 
@@ -440,9 +442,8 @@ The \textit{election} agent has the highest combined score for $nA=1$ but higher
 
 %--------------------------------------------------------
 \subsection{Agent CPU Time}
-Metric of efficiency of the method, resource useage.
-
-For each test generated the met the precondition, the CPU time taken to execute the agent action was averaged over the $k$-tests and compared across different agent types and numbers, Fig.~\ref{CPUTime}. This is essentially how much additional CPU time is required to execute the actions of a random agent over a more commplex one.
+% Metric of efficiency of the method, resource useage.
+For each test generated that met the precondition, the CPU time taken to execute the agent action was averaged over the $k$-tests and compared across different agent types and numbers, Fig.~\ref{CPUTime}. This is essentially comparing the resources required to execute the actions of differenet agent types.
 
 \begin{figure}[!t]
 	\centering
@@ -517,8 +518,8 @@ Further to this list of attributes, some generated tests may be \textit{valid} a
 % \todo[inline]{Or is this just an example of an extreme edge case? Comments welome here as i'm not convinced of my own arguemnt! I suppose if you can you generate the same test in multiple ways then you should choose one that is more realistic.} %
 Therefore the category \textit{Existent} should be added:
 \begin{itemize}
-	\item \textit{Existent}: The level of reality of the test case beyond simply being valid. Agents in this case study are penalised for walking in the road, see Fig.~\ref{AgentScore}.
-	\item or...
+	% \item \textit{Existent}: The level of reality of the test case beyond simply being valid. Agents in this case study are penalised for walking in the road, see Fig.~\ref{AgentScore}.
+	% \item or...
 	\item \textit{Existent}: Test cases should promote realistic scenarios or if competing valid cases exist then deference should be given to the more realistic one. Agents in this case study are penalised for walking in the road, see Fig.~\ref{AgentScore}.
 \end{itemize}
 
@@ -562,8 +563,7 @@ Including personality to agents is also another avenue that could provide insigh
 %
 There is also the possibility to have have combination of random and directed agents to ensure the initial 80\% of coverage is satisfied quickly then add more intelligent agents for hole coverage.
 
-Code %used in this analysis is 
-available at \url{github.com/TSL-UOB/CAV-MAS}.
+
 
 
 %----------------- Acknowledgment ---------------------------
