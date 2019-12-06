@@ -165,9 +165,10 @@ A good test case should be \textit{effective} (at detecting defects), \textit{ef
 % Test generation taxonomy
 The agent based test generation technique will sit alongside and complement the techniques in the existing verification taxonomy~\cite{utting2012taxonomy}. The new method will form a new leaf node at the Test Generation-Technology branch of the existing taxonomy of model-based test generation, Fig~\ref{taxonomy}. %
 %
-This work proposes using an agent based model for test generation. This fits in within the existing taxonomy of model-based testing \cite{utting2012taxonomy} under the test generation - technology branch.\todo[inline]{more/stronger motivation - why agents? what is the challenge/problem?}
+This work proposes using an agent based model for test generation. This fits in within the existing taxonomy of model-based testing \cite{utting2012taxonomy} under the test generation - technology branch.
+% \todo[inline]{more/stronger motivation - why agents? what is the challenge/problem?}
 
-\todo[inline]{mention how there are formal and informal rules of the road, both of which are valid tests Regulators would use the former to assess the safety case for the vehicle, whereas public opinion may be persuaded more by compliance of the latter. Trustworthiness will certainly be composed of both aspects of differing proportions depending on the audience.}
+% \todo[inline]{mention how there are formal and informal rules of the road, both of which are valid tests Regulators would use the former to assess the safety case for the vehicle, whereas public opinion may be persuaded more by compliance of the latter. Trustworthiness will certainly be composed of both aspects of differing proportions depending on the audience.}
 
 
 %----------------------------------------------------------
@@ -272,7 +273,7 @@ Rocklage et al.~\cite{Rocklage2017} approach the problem of test generation from
 
 %------------------- Natural Behaviour vs. Edge Case ----------------------
 \subsection{Natural Behaviour vs. Edge Case}
-\todo[inline]{Natural = waiting for interesting event, Edge case = find only interesting events.}
+% \todo[inline]{Natural = waiting for interesting event, Edge case = find only interesting events.}
 One could argue that the simulation environment presented to the AV should be as close to the real world it seeks to emulate as the most realistic proving ground. In this case such efforts seek to reduce the \textit{reality gap}~\cite{Jakobi1995} providing the most likely scenarios and actor behaviour. One approach is to monitor real traffic scenarios from traffic monitoring cameras, tracking individual vehicles, cyclists and pedestrians and from these build behavioural models for each road scene for which you have traffic data~\cite{behbahani2019learning}. 
 
 
@@ -495,7 +496,7 @@ The directed agents consistently improve over the time taken by the random class
 %--------------------------------------------------------
 \subsection{Results Analysis}
 % \todo[inline]{discuss how the test show compliance against the `good test case' description in the intro: Accuracy is not precisely detecting defects in this case but the AV is put inot a situation where this is tested, Agent CPU is a resource metric = ecomonic, TTGT also economic but more a `return on investment' with efficiency. Agent score can be considered as the evolvable attribute as agents with a high score should do well in other environments (road layouts here) and still maintain realistic behaviour. The only attribute not covered is exemplary as in this case study only a single assertion is considered.}
-\todo[inline]{Agent density vs. accuracy - can be used to det how many agents required for map size}
+% \todo[inline]{Agent density vs. accuracy - can be used to det how many agents required for map size}
 
 The results are assessed aginst the criterea of a `good' test case as described in~\cite{fewster1999software}.
 \begin{itemize}
@@ -513,7 +514,7 @@ The results are assessed aginst the criterea of a `good' test case as described 
 % \todo[inline]{Do we need to add a new category to this list Eathly, Existent (def.=having reality), Embodied?-  level of natural or expected behaviour? Test cases generated may be both valid and interesting but not realistic - how do we control for this? do we need to? or does it not matter?}
 
 Further to this list of attributes, some generated tests may be \textit{valid} and \textit{interesting} but may not be \textit{realistic} i.e. a \textit{valid} test could technically happen but might never occur in reality. For example, a test that generated a vehicle driving in a river or parked on a building are invalid however a car driving the wrong way down a motorway/highway is valid but unrealistic. %
-\todo[inline]{Or is this just an example of an extreme edge case? Comments welome here as i'm not convinced of my own arguemnt! I suppose if you can you generate the same test in multiple ways then you should choose one that is more realistic.} %
+% \todo[inline]{Or is this just an example of an extreme edge case? Comments welome here as i'm not convinced of my own arguemnt! I suppose if you can you generate the same test in multiple ways then you should choose one that is more realistic.} %
 Therefore the category \textit{Existent} should be added:
 \begin{itemize}
 	\item \textit{Existent}: The level of reality of the test case beyond simply being valid. Agents in this case study are penalised for walking in the road, see Fig.~\ref{AgentScore}.
