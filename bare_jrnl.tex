@@ -317,7 +317,7 @@ This section describes a case study to explore the proposed agent-based test gen
 Our aim is to generate tests that exercise an assertion that requires the AV to avoid collisions with other road users, provided that an entity, a pedestrian in this case, intrudes in the path of the AV in such a way that a collision can be avoided by the AV either by braking or manoeuvring. In Fig.~\ref{gridRoad} this is illustrated by the `Precondition Zone', i.e.\ the area of interest in which the assertion is activated.
 %
 % The precondition is activated when an entity (pedestrian) intrudes in the path of the AV which can be avoided either by braking or manoeuvring, see the `Precondition Zone' in Fig.~\ref{gridRoad}. 
-Intrusions that fall within the `Stopping Distance' of the AV, 12m at 30km/h~\cite{codes2015highway}, are not considered interesting as they result in unavoidable collisions and tests of this type are of limited use. 
+Intrusions that fall within the `Stopping Distance' of the AV, 12m at 30km/h~\cite{codes2015highway}, are not considered interesting as they result in unavoidable collisions and tests of this type are of limited use \cite{Tuncali2018}. 
 %
 %In this case the entity is a pedestrian and an avoidable intrusion to the path of the AV is defined as TTC<1s (Time To Collision)%
 %
@@ -487,11 +487,11 @@ For each test generated that met the precondition, the CPU time taken to execute
 \centering
 \caption{Test agent summary table showing description and number of lines of code ($LOC$) for each agent and sample of results: Accuracy, Combined Score ($s_c$), CPU Time ($t_{c}$) and Test Generation Time ($t_{g}$) for $nA=3$.}
 \label{ResultsTable}
-\begin{tabular}{|l|p{6.2cm}|c||c|c|c|c|}
+\begin{tabular}{|l|p{6.2cm}|r||c|c|c|c|}
 \hline
 \textbf{Behaviour} & \textbf{Agent Description} & $LOC$ & Accuracy (\%) & $s_c$ (points)&  $t_{c}$ (s) & $t_{g}$ (ticks) \\
 \hline
-Random & Randomly perform action (up, down, left, right, stop). 		&  23& 42.7 & 0.254 & 0.09 & 9.11 \\
+Random & Randomly perform action (up, down, left, right, stop)  		&  23& 42.7 & 0.254 & 0.09 & 9.11 \\
 Constrained Random & Walk along pavement, randomly cross the road 		&  82& 56.0 & 0.287 & 0.08 & 8.83 \\
 Proximity & Walk along pavement, Cross road when AV in range 			&  86& 85.5 & 0.540 & 0.37 & 6.79 \\
 Election & As in Proximity but elect a single agent to cross 			& 235& 71.7 & 1.470 & 0.49 & 6.59 \\
