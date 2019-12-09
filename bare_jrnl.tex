@@ -318,8 +318,10 @@ This section describes a case study to explore the proposed agent-based test gen
 %
 Our aim is to generate tests that exercise an assertion that requires the AV to avoid collisions with other road users, provided that an entity, a pedestrian in this case, intrudes in the path of the AV in such a way that a collision can be avoided by the AV either by braking or manoeuvring. In Fig.~\ref{gridRoad} this is illustrated by the `Precondition Zone', i.e.\ the area of interest in which the assertion is activated.
 %
+In the following, we shall term tests that activate the assertion \textit{successful} tests as they count towards assertion coverage. 
+%
 % The precondition is activated when an entity (pedestrian) intrudes in the path of the AV which can be avoided either by braking or manoeuvring, see the `Precondition Zone' in Fig.~\ref{gridRoad}. 
-Intrusions that fall within the `Stopping Distance' of the AV, 12m at 30km/h~\cite{codes2015highway}, are not considered interesting as they result in unavoidable collisions and tests of this type are of limited use \cite{Tuncali2018}. 
+Intrusions that fall within the `Stopping Distance' of the AV, i.e.\ a zone of 12m length at 30km/h~\cite{codes2015highway} as marked in Fig.~\ref{gridRoad}, are not considered interesting as they result in unavoidable collisions and tests of this type are of limited use~\cite{Tuncali2018}. 
 %
 %In this case the entity is a pedestrian and an avoidable intrusion to the path of the AV is defined as TTC<1s (Time To Collision)%
 %
