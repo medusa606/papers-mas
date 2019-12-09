@@ -187,7 +187,7 @@ A geospacial database logs the AV and all other actors to enable post-simulation
 
 %----------------------------------------------------------
 % Scene, Scenario definitions
-As well defined in~\cite{Ulbrich2015}; Scene referes to all static objects including the road network, street furniture and a snapshot of any dynamic elements. Any dynamic element whose actions or behaviour may change with respect to time are considered actors which may include other road vehicles, pedestrians and traffic signals. 
+As well defined in~\cite{Ulbrich2015}; Scene refers to all static objects including the road network, street furniture and a snapshot of any dynamic elements. Any dynamic element whose actions or behaviour may change with respect to time are considered actors which may include other road vehicles, pedestrians and traffic signals. 
 %
 A situation is defined as the subjective conditions and determinants for behaviour at a particular point in time. 
 %
@@ -205,7 +205,7 @@ The test case specification may be generated in a number of ways familiar to the
 %
 %----------------------------------------------------------
 % Summary
-The proposed method focuses on the development between scenes dictated by the goals or values of the dynamic actors in the scene. A suitable framework for this appraoch to control is the Multi-Agent Systems paradigm. 
+The proposed method focuses on the development between scenes dictated by the goals or values of the dynamic actors in the scene. A suitable framework for this approach to control is the Multi-Agent Systems paradigm. 
 
 
 
@@ -241,17 +241,17 @@ Hawkins et al.~\cite{hawkins2019situation} use the Multi-Agent Simulator Of Neig
 % Describe conventional methods for test generation for verification, e.g. formal methods, random methods, hand-written tests.
 % Discuss the ways that you can generate tests 1)use random 2) use engineers to write tests 3)AI/ML methods ...
 
-A good overview of the challenges currently faced in software testing of autonomous vehicles are well document by Koopman highlighting the importance of fault injection into the testing domain~\cite{Koopman2016} and how to decide what aspects of the system need to be tested in the areas of operational design domains, event detection and vehicle maneuvers~\cite{Koopman2019}. 
+A good overview of the challenges currently faced in software testing of autonomous vehicles are well document by Koopman highlighting the importance of fault injection into the testing domain~\cite{Koopman2016} and how to decide what aspects of the system need to be tested in the areas of operational design domains, event detection and vehicle manoeuvres~\cite{Koopman2019}. 
 %
 Describing a driving scene in natural language has been shown to be an effective framework for scenario generation which can also be automated based formalised rules and knowledge~\cite{Bagschik2018} or even evolving from ISO safety standards~\cite{Menzel2018}. 
 %
-Hallenbach et al. take the approach to test generation of developing composite metrics for traffic quality and using them to determine if a senarios is `critical' or not and therefore worth exploring further~\cite{Hallerbach2018}. 
+Hallenbach et al. take the approach to test generation of developing composite metrics for traffic quality and using them to determine if a scenarios is `critical' or not and therefore worth exploring further~\cite{Hallerbach2018}. 
 %
 Generating targeted test cases can be a more efficient way to get complete coverage. By finding tests that exercise the complete decision making domain we can do away with the `unnecessary miles' of testing precisely explored by Mullins et al.,~\cite{Mullins2018} where they describe a test generation method based on the transitions between decision making performance modes of the AV. 
 %
 Saigol et al.~\cite{Saigol2018} discuss the need for \textit{smart actor control} which may lead to interesting scenarios when interacting with the AV in their proposed test bench framework for automated testing. 
 %
-Rocklage et al.~\cite{Rocklage2017} approach the problem of test generation from the veiwpoint of the other traffic participants, using a trajectory planner to ensure coverage over a fixed list of scene parameters.
+Rocklage et al.~\cite{Rocklage2017} approach the problem of test generation from the viewpoint of the other traffic participants, using a trajectory planner to ensure coverage over a fixed list of scene parameters.
 
 % There are many factors that may influence the choice of test generation for your application, here we choose to focus on accuracy and cost, see~Fig\ref{cost_accuracy}. Accuracy in this context is defined as the ratio of tests that exercise the targeted assertion compared to the total number of tests generated. In another way this is the efficiency of the test generation method in 'finding' coverage.
 
@@ -283,7 +283,7 @@ One could argue that the simulation environment presented to the AV should be as
 
 %--------------------------------------------------------
 % What do we want to do with these ideas - use the agent based framework to drive test generation
-This research proposes that agent based test generation can be used as an efficient and scaleable method for AV verification. Within existing multi-agent frameworks, e.g. JASON~\cite{bordini2005jason} agents are given specific goals and actions which are updated based on perceptions of the environment. The proposed implementation would work similarly, where agents (cars, pedestrians, cyclists, traffic lights etc.) are given goals that relate to the coverage task required. As such, simulated driving scenarios are not prescriptive at the outset but evolve with time based on the actions of the test vehicle.
+This research proposes that agent based test generation can be used as an efficient and scalable method for AV verification. Within existing multi-agent frameworks, e.g. JASON~\cite{bordini2005jason} agents are given specific goals and actions which are updated based on perceptions of the environment. The proposed implementation would work similarly, where agents (cars, pedestrians, cyclists, traffic lights etc.) are given goals that relate to the coverage task required. As such, simulated driving scenarios are not prescriptive at the outset but evolve with time based on the actions of the test vehicle.
 
 
 
@@ -293,7 +293,7 @@ This research proposes that agent based test generation can be used as an effici
 
 In this paper we explore the use of a multi-agent system approach to test generation. In theory the MAS technique should achieve better accuracy than a random method as agents can be encoded with certain behaviours that drive the scenario towards a precondition for the assertion that needs to be tested. 
 %
-This should inccur a relatively small cost on the development engineer due to the abstraction of goals in agent based programming but at the cost of additional lines of code and resources used at runtime. 
+This should incur a relatively small cost on the development engineer due to the abstraction of goals in agent based programming but at the cost of additional lines of code and resources used at runtime. 
 %
 A small example is used to illustrate these metrics in a single scene that uses a MAS framework, e.g. Jason~\cite{bordini2005jason}, to generate interesting tests. A full description of the assessment is given in Section~\ref{CaseStudy}. 
 %
@@ -307,21 +307,23 @@ This is a conceptual proof and not a complete verification process, choosing onl
  
 This section describes a case study to explore the proposed test generation method.%
 \footnote{ Code used is available at \url{github.com/TSL-UOB/CAV-MAS}.} %
-The aim is to generate tests that exercise the precondition for a single assertion: collision avoidance. The precondition in this case states that for the associated decision making process in the AV to be exercised an entity in the path of the vehicle should be avoided either by braking or manouvering.  A single assertion is chosen to isolate assessment of the test generation concept and not a demonstrate a complete verification process. The assertion chosen in this example is collision avoidance with a pedestrian and a successful test would be when the pedestrian enters the emergency braking zone of the DUT, i.e. within a 1s time-to-collision (TTC) window of the leading edge of the vehicle. The outcome of the test and the behaviour of the AV are not the focus here, but that tests are generated using the agent framework that satisfy the precondition for the assertion. 
+The aim is to generate tests that exercise the precondition for a single assertion: collision avoidance. The precondition in this case states that for the associated decision making process in the AV to be exercised an entity in the path of the vehicle should be avoided either by braking or manoeuvring.  A single assertion is chosen to isolate assessment of the test generation concept and not a demonstrate a complete verification process. The assertion chosen in this example is collision avoidance with a pedestrian and a successful test would be when the pedestrian enters the emergency braking zone of the DUV, i.e. within a 1s time-to-collision (TTC) window of the leading edge of the vehicle. The outcome of the test and the behaviour of the AV are not the focus here, but that tests are generated using the agent framework that satisfy the precondition for the assertion. 
+
+\todo[inline]{precondition for the assertion or precondition of the assertion?}
 
 %------------------- Test Agents -----------------------------
 \subsection{Test Agents}
 To assess if the agent based model of test generation is effective it is compared to random methods and repeated sufficiently for statistical power. A simple scene is chosen containing a straight road with a pavement either side represented in a grid world with a finite (1.0s) time interval. For this example pedestrian and test agent are synonymous. At the start of a test pedestrians are randomly located onto the pavement area and the AV is represented as a vehicle that drives at constant speed in a straight line and will not brake or turn. The test agents have differing levels of behaviour from simple random to more complex and directed, which is the focus of this section. 
 
-The different pedestrian actions can be split into two main classes: random and directed, see Table~\ref{ResultsTable}. For the random class, the \textit{random action} is where the test agent can make any random movement at each tick where the available actions are: do nothing (stand still), move up, down, left or right. For the \textit{random behaviour} the pedestrian is instantiated walking along the pavement before the simulation starts and has only one action; to randomly choose when to cross the road. The random behaviour is included so that a comparison between crossing the road at a targeted or random time can be made. 
+The different pedestrian actions can be split into two main classes: random and directed, see Table~\ref{ResultsTable}. For the random class, the \textit{random} is where the test agent can make any random movement at each tick where the available actions are: do nothing (stand still), move up, down, left or right. For the \textit{constrained random} the pedestrian is instantiated walking along the pavement before the simulation starts and has only one action; to randomly choose when to cross the road. The constrained random is included so that a comparison between crossing the road at a targeted or random time can be made. 
 
-The second class of actions are based on perceptions of the pedestrian and these agents are initialised walking along the pavement as in random behaviour. The \textit{proximity} behaviour instructs the agent to cross the road when the AV is within a certain radius. Using the \textit{intersect} behaviour, the agent calculates an intersection time and chooses to cross the road if the pedestrian can reach the intersection point before the AV has passed. The \textit{election} behaviour ranks the probability of each agent to enact the intersect behaviour and elects the agent with the highest likelihood of success.
+The second class of actions are based on perceptions of the pedestrian and these agents are initialised walking along the pavement as in constrained random. The \textit{proximity} behaviour instructs the agent to cross the road when the AV is within a certain radius. Using the \textit{intersect} behaviour, the agent calculates an intersection time and chooses to cross the road if the pedestrian can reach the intersection point before the AV has passed. The \textit{election} behaviour ranks the probability of each agent to enact the intersect behaviour and elects the agent with the highest likelihood of success.
 
 The \textit{proximity} behaviour describes an agent, for this assertion, with suicidal tendencies that will step into the road whenever a car is nearby but is a highly improbably model of pedestrian actions. The \textit{proximity} behaviour also suffers from the `zombie effect' where all nearby pedestrians are drawn to the passing vehicle which may lead to the coverage point required but through an improbable scenario. The \textit{intersect} behaviour is a more refined version of the proximity behaviour but may still result in multiple agents attempting to intersect the AV simultaneously whereas the \textit{election} behaviour should limit this to a single agent.
 
 % Agent numbers
 The number of agents is also a factor to consider for this demonstration, too few and the likelihood of an agent triggering the assertion will be low and entirely dependent on the initial starting position in the test environment due to differences in speed. The maximum number of agents could be considered all the available grid locations (1.5m spacing) on the pavement without overlap.
-As the number of agents, $nA$, tends to this maximum the probability of hitting the coverage point using a random class increases significantly as more agents appear in the road with an increase in computation expense. As $nA$ increases using more intelligent behaviour methods, suitable agents to complete the assertion should be found more readily resulting in shorter and hence more efficient tests. The range of $nA$  explored was 1-10.
+As the number of agents, $nA$, tends to this maximum the probability of hitting the coverage point using a random class increases significantly as more agents appear in the road with an increase in computation expense. As $nA$ increases using more intelligent behaviour methods, suitable agents to trigger the assertion precondition should be found more readily resulting in shorter and hence more efficient tests. The range of $nA$  explored was 1-20.
 
 % Shortcomings
 As with any model refinements could be made to improve coverage success, such as comparing direction of travel between the AV and the agent or modifying pedestrian speed, but this example is kept simple to illustrate the concept. 
@@ -330,7 +332,7 @@ As with any model refinements could be made to improve coverage success, such as
 \subsection{Test Environment}
 The testing environment, see Fig.~\ref{gridRoad} is a straight two-lane road 99m long and each lane is 6m wide. Pavements are on both sides of the road which are three meters in width giving a total size is 18m x 99m. 
 %
-The assumed AV velocity is 20 mph which is equivalent to 9.1 m/s that is rounded down to 9 m/s. The pedestrian velocity is 3 mph equivalent 1.4 m/s rounded up to 1.5 m/s. The map is discretised with 1.5 meter resolution for simple division into the AV and pedestrians velocities. Thus, in the discretised world the AV velocity is 6 unit/sec and the pedestrians velocity is 1 unit/sec. The total number of map cells is 12 x 66 = 792 cells. 
+The AV velocity is 9.0 m/s (equivalent to {\raise.17ex\hbox{$\scriptstyle\sim$}}20 mph). The pedestrian velocity is 3 mph equivalent 1.4 m/s rounded up to 1.5 m/s. The map is discretised with 1.5 meter resolution for simple division into the AV and pedestrians velocities. Thus, in the discretised world the AV velocity is 6 cell/sec and the pedestrians velocity is 1 cell/sec. The total number of map cells is 12 x 66 = 792 cells. 
 
 The AV travels along the left hand lane of the road starting at cell $y=0$ and travelling to the end, cell $y=66$. If the assertion is triggered or the AV reaches the end of the road then the test is restarted. The AV occupies an area 4.5x3m equivalent to 4x2 cells. There are no other vehicles and the right hand side of the road is unoccupied.
 
@@ -360,15 +362,15 @@ In an attempt to impose more realistic behaviour on the agents, a scoring system
 
 The scoring system is:
 \begin{itemize}
-  \item A reward of 20 is given if the agent intersects the AV.
+  \item A reward of 100 is given if the agent intersects the AV.
   \item A penalty of -1 for each time step.
-  \item A penalty of -7 for each time step spent in the road.
+  \item A penalty of -5 for each time step spent in the road.
 \end{itemize}
 
 
 %------------------- Simulation and Logging -----------------------------
 \subsection{Simulation and Logging}
-Each of the agent behaviours were written into the Jason platform along with the test environment as described above. For each test a basic log of the agent actions, score and time to completion are recorded and then averaged for each type. A list of random start locations was created for the pedestrians and this was done for each value of $nA$ explored, i.e. 1-10. The list was then used to spawn the pedestrians for each behavioural type to ensure the initial conditions were identical.
+Each of the agent behaviours were written into the Jason platform along with the test environment as described above. For each test a basic log of the agent actions, score and time to completion are recorded and then averaged for each type. A list of random start locations was created for the pedestrians and this was done for each value of $nA$ explored, i.e. 1-20. The list was then used to spawn the pedestrians for each behavioural type to ensure the initial conditions were identical.
 
 Ultimately the scoring should reflect the benefits of the methods against the needs of test generation: accuracy, cost and robustness. We want tests that are accurate (valid tests, collects coverage) and sufficiently low cost (CPU hours, engineering time). If tests are robust they are adaptable to real-time events, e.g. AV slows down around bend requiring agents to recalculate intersection.
 
@@ -379,13 +381,13 @@ Ultimately the scoring should reflect the benefits of the methods against the ne
 
 %------------ Results Discussion ---------------
 \section{Results}
-The results section is split into 4 parts; Accuracy is the ratio of sucessfull tests the agents generated as a ratio of all tests, Score is a measure of how natural the agents behaved, Combined Score combines accuracy with score, and Time is how long the agents took to generate the test in both simulation ticks and wall clock time. Both Score and Time have distributions associated with them and as such confidence intervals are provided.
+The results section is split into 5 parts; Accuracy is the ratio of successful tests the agents generated as a ratio of all tests, Score is a measure of how natural the agents behaved, Combined Score combines accuracy with score, and Time is how long the agents took to generate the test in both simulation ticks and wall clock time. Both Score and Time have distributions associated with them and as such confidence intervals are provided.
 
 
 
 %--------------------------------------------------------
 \subsection{Test Accuracy}
-Test generation accuracy, defined as the number of tests that have activated the precondition for the asserion as a ratio of all tests, are shown for each agent type in Fig.~\ref{Accuracy}. The \textit{random action} (RA) and \textit{random behaviour} (RB) have lower accuracy compared to directed agents when $nA<10$. For high $nA$ the accuracies converge mostly due to a saturation of agents (explained above).
+Test generation accuracy, defined as the number of tests that have activated the precondition for the assertion as a ratio of all tests, are shown for each agent type in Fig.~\ref{Accuracy}. The \textit{random} (RA) and \textit{constrained random} (CR) have lower accuracy compared to directed agents when $nA<10$. For high $nA$ the accuracies converge mostly due to a saturation of agents (explained above).
 %
 Fig.~\ref{Accuracy} also shows that for $nA=1$ a directed agent outperforms a random agent by more than 2:1. The \textit{election} agent generates a slightly higher accuracy than the \textit{proximity} agent but only by 2.2\%. However, for $nA=2$ and above the \textit{proximity} agent has a 10\% increase over the election agent which is because this agent has multiple attempts to trigger the precondition whereas the election agent only has one.
 
@@ -401,7 +403,7 @@ Fig.~\ref{Accuracy} also shows that for $nA=1$ a directed agent outperforms a ra
 
 %--------------------------------------------------------
 \subsection{Test Score} \label{testscore}
-For tests that activate the precondition the average agent score is compiled including 95\% confidence interval range, see Fig.~\ref{AgentScore}. The maximum theoretical score of any agent is 94 which includes 100 points for a successful test sub tracting a living cost of 1 and road penalty of 5. For a single agent scores between agent types are similar as accuracy is being controlled for by including only the successful tests. As the number of agents increases the random class diverge from the directed class and the variance in the random agent score increases. 
+For tests that activate the precondition the average agent score is compiled including 95\% confidence interval range, see Fig.~\ref{AgentScore}. The maximum theoretical score of any agent is 94 which includes 100 points for a successful test subtracting a living cost of 1 and road penalty of 5. For a single agent scores between agent types are similar as accuracy is being controlled for by including only the successful tests. As the number of agents increases the random class diverge from the directed class and the variance in the random agent score increases. 
 
 % \todo[inline]{why no variance for nA=1 in random? this is counter intuitive, it suggests random agents that succeed score only the highest value score!} 
 
@@ -426,11 +428,11 @@ No significant dfference between the directed class is seen in the score even wi
 \subsection{Combined Score}
 As the score above (section \ref{testscore}) only shows tests that meet the precondition, it can be easy to interpret these results as overly optimistic so a \textit{combined score} is provided which is given by (score * accuracy / 1000). This combined measure promotes scores that are attached to high accuracies, describing agents that can generate useful tests with natural pedestrian behaviour. Time could also ave been included as a denominator here but is not as is accounted for in the living cost penalty.%
 %
-The normalised results, Fig~\ref{Combined}, show that the directed agents are over twice as effective within this new combined definition than random agents for $nA=1$ although this advanted drops rapidly with increasing agent numbers to reach a steady gap of around 12\%.
+The normalised results, Fig~\ref{Combined}, show that the directed agents are over twice as effective within this new combined definition than random agents for $nA=1$ although this advanced drops rapidly with increasing agent numbers to reach a steady gap of around 12\%.
 %
-The \textit{random behaviour} agent outperforms the \textit{random action} for $nA<4$ beyound which there is little difference. So if random is your choice, you might as well just use completely random unless you want to use low agent numbers. %
+The \textit{constrained random} agent outperforms the \textit{random} for $nA<4$ beyond which there is little difference. So if random is your choice, you might as well just use completely random unless you want to use low agent numbers. %
 %
-The \textit{election} agent has the highest combined score for $nA=1$ but higher agent numbers are favor the \textit{proximity} agent up to $nA=4$ beyond which there is no notable difference between the directed agent types. %
+The \textit{election} agent has the highest combined score for $nA=1$ but higher agent numbers are favour the \textit{proximity} agent up to $nA=4$ beyond which there is no notable difference between the directed agent types. %
 %
 % \todo[inline]{Describe relation to theoretical maximal?}
 
@@ -447,12 +449,12 @@ The \textit{election} agent has the highest combined score for $nA=1$ but higher
 %--------------------------------------------------------
 \subsection{Agent CPU Time}
 % Metric of efficiency of the method, resource useage.
-For each test generated that met the precondition, the CPU time taken to execute the agent action was averaged over the $k$-tests and compared across different agent types and numbers, Fig.~\ref{CPUTime}. This is essentially comparing the resources required to execute the actions of differenet agent types.
+For each test generated that met the precondition, the CPU time taken to execute the agent action was averaged over the $k$-tests and compared across different agent types and numbers, Fig.~\ref{CPUTime}. This is essentially comparing the resources required to execute the actions of different agent types.
 
 \begin{figure}[!t]
 	\centering
 \includegraphics[width=0.48\textwidth]{TimeCPU_log.pdf}
-	\caption{The CPU time taken to execute the agent actions averaged over 1000 tests. The more complex agents have additional CPU overhead compared to random but this difference is relatively unchaged with agent numbers.}
+	\caption{The CPU time taken to execute the agent actions averaged over 1000 experiments. The more complex agents have additional CPU overhead compared to random but this difference is relatively unchanged with agent numbers.}
 	\label{CPUTime}
 \end{figure}
 
@@ -462,26 +464,22 @@ For each test generated that met the precondition, the CPU time taken to execute
 %---------------- Results Table -------------------------
 \begin{table*}
 \centering
-\caption{Test agent summary table showing description and number of lines of code ($CL$) for each agent and sample of results: Accuracy, Combined Score ($CS$), CPU Time ($t_{CPU}$) and Test Generation Time (TGT) for $nA=3$.}
+\caption{Test agent summary table showing description and number of lines of code ($LOC$) for each agent and sample of results: Accuracy, Combined Score ($s_c$), CPU Time ($t_{c}$) and Test Generation Time ($t_{g}$) for $nA=3$.}
 \label{ResultsTable}
 \begin{tabular}{|l|p{6.2cm}|c||c|c|c|c|}
 \hline
-\textbf{Method} & \textbf{Agent Description} & $CL$ & Accuracy & $CS$ &  $t_{CPU}$ (s) & $TGT$ \\
-% \textbf{Method} & Agent Description & $CL$ & Accuracy & $CS$ &  $t_{CPU}$ (s) & $TGT$ \\
+\textbf{Behaviour} & \textbf{Agent Description} & $LOC$ & Accuracy (\%) & $s_c$ (points)&  $t_{c}$ (s) & $t_{g}$ (ticks) \\
 \hline
-Random Action & Randomly perform action (up, down, left, right, stop). 	&  23& 42.7 & 0.254 & 0.09 & 9.11 \\
-Random Behaviour & Walk along pavement, randomly cross the road 		&  82& 56.0 & 0.287 & 0.08 & 8.83 \\
+Random & Randomly perform action (up, down, left, right, stop). 		&  23& 42.7 & 0.254 & 0.09 & 9.11 \\
+Constrained Random & Walk along pavement, randomly cross the road 		&  82& 56.0 & 0.287 & 0.08 & 8.83 \\
 Proximity & Walk along pavement, Cross road when AV in range 			&  86& 85.5 & 0.540 & 0.37 & 6.79 \\
 Election & As in Proximity but elect a single agent to cross 			& 235& 71.7 & 1.470 & 0.49 & 6.59 \\
 \hline 
 \end{tabular}
 \end{table*}
 
-
-
-
 %--------------------------------------------------------
-\subsection{Time to generate test}
+\subsection{Time to Generate Test}
 % Return on investment.
 For each successful test generated the reported time was averaged over $k$-tests and compared across different agent numbers, Fig.~\ref{Time}. 
 %
@@ -490,7 +488,7 @@ The directed agents consistently improve over the time taken by the random class
 \begin{figure}[!t]
 	\centering
 \includegraphics[width=0.48\textwidth]{Time.pdf}
-	\caption{The average time taken for an agent to find a successful test.}
+	\caption{The average time taken for an agent to find a successful test, $t_{g}$.}
 	\label{Time}
 \end{figure}
 
@@ -503,17 +501,17 @@ The directed agents consistently improve over the time taken by the random class
 % \todo[inline]{discuss how the test show compliance against the `good test case' description in the intro: Accuracy is not precisely detecting defects in this case but the AV is put inot a situation where this is tested, Agent CPU is a resource metric = ecomonic, TTGT also economic but more a `return on investment' with efficiency. Agent score can be considered as the evolvable attribute as agents with a high score should do well in other environments (road layouts here) and still maintain realistic behaviour. The only attribute not covered is exemplary as in this case study only a single assertion is considered.}
 % \todo[inline]{Agent density vs. accuracy - can be used to det how many agents required for map size}
 
-The results are assessed aginst the criterea of a `good' test case as described in~\cite{fewster1999software}.
+The results are assessed against the criteria of a `good' test case as described in~\cite{fewster1999software}.
 \begin{itemize}
-	\item \textit{Effective}: How effective the method is at generating test cases that detect faults with the responder. The Accuracy metric, defined above, shows how often the agent generates a test case that satisfies the precondition of the assertion and will therefore reveal, or is likely to reveal, defects of the DUT. Fig.~\ref{Accuracy} shows that a small number of directed agents are around twice as effective as random ones and over three times as effective for a single agent.
+	\item \textit{Effective}: How effective the method is at generating test cases that detect faults with the responder. The Accuracy metric, defined above, shows how often the agent generates a test case that satisfies the precondition of the assertion and will therefore reveal, or is likely to reveal, defects of the DUV. Fig.~\ref{Accuracy} shows that a small number of directed agents are around twice as effective as random ones and over three times as effective for a single agent.
 	%
-	\item \textit{Exemplary}: An exemplary test case will test multiple aspects of the DUT thereby reducing the number of tests. In this case study, only a single assertion was used so this criteria cannot be assessed although it is a key development for future work discussed in Section~\ref{s:future}.
+	\item \textit{Exemplary}: An exemplary test case will test multiple aspects of the DUV thereby reducing the number of tests. In this case study, only a single assertion was used so this criteria cannot be assessed although it is a key development for future work discussed in Section~\ref{s:future}.
 	%
-	\item \textit{Economic}: How costly the test case is to run, analyse and debug. The resource cost (CPU time) to execute the agent actions, Fig~\ref{CPUTime} is 4-5 times more expensive for the directed agents than random. An example of the actual values are given in Table~\ref{ResultsTable} $nA=3$, see heading CPU Time. This may be a significant factor in your decision to use an intelligent agent for test generation unless you have abundent CPU resources to hand. %
+	\item \textit{Economic}: How costly the test case is to run, analyse and debug. The resource cost (CPU time) to execute the agent actions, Fig~\ref{CPUTime} is 4-5 times more expensive for the directed agents than random. An example of the actual values are given in Table~\ref{ResultsTable} $nA=3$, see heading CPU Time. This may be a significant factor in your decision to use an intelligent agent for test generation unless you have abundant CPU resources to hand. %
 	%
 	However, the test generation time, Fig~\ref{Time}, indicates that on average the directed agents find test cases that activate the precondition faster than random in terms of simulation ticks. Therefore, although more resource is allocated to the directed agents they find tests faster overall due to better efficiency, i.e. better return on investment (ROI).
 	%
-	\item \textit{Evolvable}: The maintenance required to adapt the test case to new software changes or \textit{scenes} in our case. In the case study each test generated is of a different scene as the agent position is randomly generated each time. Therefore the directed agents show adapability to new scenes and this attribute is accounted for within the accuracy. This case study could be easily shown to succeed with different road layouts, vehicle speeds, see Section~\ref{s:future}.
+	\item \textit{Evolvable}: The maintenance required to adapt the test case to new software changes or \textit{scenes} in our case. In the case study each test generated is of a different scene as the agent position is randomly generated each time. Therefore the directed agents show adaptability to new scenes and this attribute is accounted for within the accuracy. This case study could be easily shown to succeed with different road layouts, vehicle speeds, see Section~\ref{s:future}.
 \end{itemize}
 
 % \todo[inline]{Do we need to add a new category to this list Eathly, Existent (def.=having reality), Embodied?-  level of natural or expected behaviour? Test cases generated may be both valid and interesting but not realistic - how do we control for this? do we need to? or does it not matter?}
@@ -532,9 +530,9 @@ The results show that by nearly all the metrics and parameter combinations discu
 %
 
 % This need to be added to the economic alanysis above
-But what was the cost of developing these agent behaviours and is there a limited payoff to gain significantly superior intelligence for really complex agent behaviour? %
+But what was the cost of developing these agent behaviours and is there a limited pay-off to gain significantly superior intelligence for really complex agent behaviour? %
 %
-Comparing the lines of code for each agent can help to weigh the investment in agent complexity, see lines of code ($CL$) in Table~\ref{ResultsTable}. This shows that for a small investment the \textit{random action} agent with 23 lines of code can be improved significantly with (86 lines) to improve it's combined score and test generatio time (TGT). To improve the combined score further with the \textit{election} agent took 10x the \textit{random action} code with lower overall accuracy but better combined score suggesting this was not worth the investment.
+Comparing the lines of code for each agent can help to weigh the investment in agent complexity, see lines of code ($LOC$) in Table~\ref{ResultsTable}. This shows that for a small investment the \textit{random} agent with 23 lines of code can be improved significantly with (86 lines) to improve it's combined score and test generation time ($t_{g}$). To improve the combined score further with the \textit{election} agent took 10x the \textit{random} code with lower overall accuracy but better combined score suggesting this was not worth the investment.
 
 % This also raises the question of how comlex the agents sould be? 
 This analysis above would suggest that the level of agent complexity should be considered carefully as a simpler level of intelligence could be more beneficial than very complex one which may also required additional investment in debugging.
@@ -554,24 +552,25 @@ Our results suggest that generating tests using testing agents is a promising av
 
 
 
-%\subsection{Future Work} 
+% \subsection{Future Work} 
 %
-In this small case study there is only a single assertion considered. But how agents behave when multiple assertions or \textit{desires} exist will be key to the success of this method. This could be achieved with a number of methods such as MDP and ANN. Furthermore, testing the agents in a variety of different scenes (e.g. different road network) would further validate the directed agent approach.
+% In this case study there is only a single assertion considered. But 
+Future work will consider how agents behave when multiple assertions %or \textit{desires} 
+exist in a variety of different scenes. %will be key to the success of this method. 
+% This could be achieved with a number of methods such as MDP and ANN. 
+% Furthermore, testing the agents in a variety of different scenes (e.g. different road network) would further validate the directed agent approach.
+As discussed in~\cite{Eder2007} agents could have their goal selection modified based on coverage feedback %would be an important step in this direction. This also 
+which fits in with the feedback reward of many such architectures, e.g. MDP~\cite{littman1994markov} and back-propagation for ANN~\cite{foerster2016learning}. %
 %
-As discussed in~\cite{Eder2007} agents that have their goal selection modified based on coverage feedback would be an important step in this direction. This also fits in with the feedback reward of many such architectures, e.g. rewards for MDP~\cite{littman1994markov} and backpropagation for ANN~\cite{foerster2016learning}. 
+Abstracting agent perceptions to a feature based representation would ensure the agent state space can scale to large physical maps and is adaptable to new features as more assertions are added. %This approach also fits in with most ML techniques.
+Including personality to agents is also another avenue that could provide insightful as a tuning parameter~\cite{Zoumpoulaki2010} to explore edge cases. %Conventionally agressive (or egoist) behaviour may seem the most interesting as edge cases and therefore require oversampmling. But there could also be merit in exploring more risk-advers behaviours or simply in understanding what normative driving conditions are as a baseline for CAV cyber security. 
+% There is also the possibility to have have combination of random and directed agents to ensure the initial 80\% of coverage is satisfied quickly then add more intelligent agents for hole coverage.
 
-Composing agents with a feature based representation of their environment is also a direction to ensure agents can scale to large physical maps and also adaptable to new features as needed. This approach also fits in with most ML techniques.
-%
-% Agents online adaptability to AV behaviour (robustness)
-Including personality to agents is also another avenue that could provide insightful as a tuning parameter~\cite{Zoumpoulaki2010}. Conventionally agressive (or egoist) behaviour may seem the most interesting as edge cases and therefore require oversampmling. But there could also be merit in exploring more risk-advers behaviours or simply in understanding what normative driving conditions are as a baseline for CAV cyber security. 
-%
-There is also the possibility to have have combination of random and directed agents to ensure the initial 80\% of coverage is satisfied quickly then add more intelligent agents for hole coverage.
-
-\todo{without millions of miles of testing?}
+% \todo{without millions of miles of testing?}
 
 
 %----------------- Acknowledgment ---------------------------
-\section*{Acknowledgment}
+\section*{Acknowledgement}
 This research has in part been funded by the ROBOPILOT and CAPRI projects. Both
 projects are part-funded by the Centre for Connected and Autonomous
 Vehicles (CCAV), delivered in partnership with Innovate UK under grant numbers
