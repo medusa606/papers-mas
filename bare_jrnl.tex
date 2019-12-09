@@ -317,28 +317,13 @@ This section describes a case study to explore the proposed agent-based test gen
 Our aim is to generate tests that exercise an assertion that requires the AV to avoid collisions with other road users, provided that an entity, a pedestrian in this case, intrudes in the path of the AV in such a way that a collision can be avoided by the AV either by braking or manoeuvring. In Fig.~\ref{gridRoad} this is illustrated by the `Precondition Zone', i.e.\ the area of interest in which the assertion is activated.
 %
 % The precondition is activated when an entity (pedestrian) intrudes in the path of the AV which can be avoided either by braking or manoeuvring, see the `Precondition Zone' in Fig.~\ref{gridRoad}. 
-Intrusions that fall within the `Stopping Distance' of the AV, 12m at 20mph~\cite{codes2015highway}, are not considered interesting as they result in unavoidable collisions and tests of this type are of limited use. 
+Intrusions that fall within the `Stopping Distance' of the AV, 12m at 30km/h~\cite{codes2015highway}, are not considered interesting as they result in unavoidable collisions and tests of this type are of limited use. 
 %
 %In this case the entity is a pedestrian and an avoidable intrusion to the path of the AV is defined as TTC<1s (Time To Collision)%
 %
 A single assertion is chosen so that we can study the fundamental properties of agent-based test generation in a simple setting.
 %
 Moreover, we do not consider the test result (pass or fail), i.e.\ the behaviour of the AV in response to the assertion being activated. 
-
-
-%------------------- Test Agents -----------------------------
-\subsection{Test Agents}
-To assess if the agent-based model of test generation is effective it is compared to random methods and repeated sufficiently for statistical power. A simple scene is chosen containing a straight road with a pavement either side represented in a grid world with a finite (1.0s) time interval. For this example pedestrian and test agent are synonymous. At the start of a test pedestrians are randomly located onto the pavement area and the AV is represented as a vehicle that drives at constant speed in a straight line and will not brake or turn. The test agents have differing behaviours from simple random to more complex and directed, which is the focus of this section. 
-
-The different agent behaviours can be split into two main classes: random and directed, see Table~\ref{ResultsTable}. For the random class, the \textit{random} is where the test agent can make any random movement at each tick where the available actions are: do nothing (stand still), move up, down, left or right. For the \textit{constrained random} the pedestrian is instantiated walking along the pavement before the simulation starts and has only one action; to randomly choose when to cross the road. The constrained random is included so that a comparison between crossing the road at a targeted or random time can be made. 
-
-The second class of behaviours are based on perceptions and these agents are initialised walking along the pavement as in constrained random. The \textit{proximity} behaviour instructs the agent to cross the road when the AV is within a certain radius. Using the \textit{intersect} behaviour, the agent calculates an intersection time and chooses to cross the road if the pedestrian can reach the intersection point before the AV has passed. The \textit{election} behaviour ranks the probability of each agent to enact the intersect behaviour and elects the agent with the highest likelihood of success.
-
-The \textit{proximity} behaviour describes an agent, for this assertion, with suicidal tendencies that will step into the road whenever a car is nearby but is a highly improbably model of pedestrian actions. The \textit{proximity} behaviour also suffers from the `zombie effect' where all nearby pedestrians are drawn to the passing vehicle which may lead to the coverage point required but through an improbable scenario. The \textit{intersect} behaviour is a more refined version of the proximity behaviour but may still result in multiple agents attempting to intersect the AV simultaneously whereas the \textit{election} behaviour should limit this to a single agent.
-
-% Agent numbers
-The number of agents is also a factor to consider for this demonstration, too few and the likelihood of an agent triggering the assertion will be low and entirely dependent on the initial starting position in the test environment due to differences in speed. The maximum number of agents could be considered all the available grid locations (1.5m spacing) on the pavement without overlap.
-As the number of agents, $nA$, tends to this maximum the probability of hitting the coverage point using a random class increases significantly as more agents appear in the road with an increase in computation expense. As $nA$ increases using more intelligent behaviour methods, suitable agents to trigger the assertion precondition should be found more readily resulting in shorter and hence more efficient tests. The range of $nA$ explored was 1-20.
 
 
 %------------------- Test Environment -----------------------------
@@ -366,6 +351,23 @@ Some areas of the environment are impossible for the agents to intersect the AV 
 	\caption{Test environment at full scale (upper) and in detail (lower) including valid and invalid spawn locations for the pedestrians and the position and direction of the AV.}
 	\label{gridRoad}
 \end{figure}
+
+
+%------------------- Test Agents -----------------------------
+\subsection{Test Agents}
+To assess if the agent-based model of test generation is effective it is compared to random methods and repeated sufficiently for statistical power. A simple scene is chosen containing a straight road with a pavement either side represented in a grid world with a finite (1.0s) time interval. For this example pedestrian and test agent are synonymous. At the start of a test pedestrians are randomly located onto the pavement area and the AV is represented as a vehicle that drives at constant speed in a straight line and will not brake or turn. The test agents have differing behaviours from simple random to more complex and directed, which is the focus of this section. 
+
+The different agent behaviours can be split into two main classes: random and directed, see Table~\ref{ResultsTable}. For the random class, the \textit{random} is where the test agent can make any random movement at each tick where the available actions are: do nothing (stand still), move up, down, left or right. For the \textit{constrained random} the pedestrian is instantiated walking along the pavement before the simulation starts and has only one action; to randomly choose when to cross the road. The constrained random is included so that a comparison between crossing the road at a targeted or random time can be made. 
+
+The second class of behaviours are based on perceptions and these agents are initialised walking along the pavement as in constrained random. The \textit{proximity} behaviour instructs the agent to cross the road when the AV is within a certain radius. Using the \textit{intersect} behaviour, the agent calculates an intersection time and chooses to cross the road if the pedestrian can reach the intersection point before the AV has passed. The \textit{election} behaviour ranks the probability of each agent to enact the intersect behaviour and elects the agent with the highest likelihood of success.
+
+The \textit{proximity} behaviour describes an agent, for this assertion, with suicidal tendencies that will step into the road whenever a car is nearby but is a highly improbably model of pedestrian actions. The \textit{proximity} behaviour also suffers from the `zombie effect' where all nearby pedestrians are drawn to the passing vehicle which may lead to the coverage point required but through an improbable scenario. The \textit{intersect} behaviour is a more refined version of the proximity behaviour but may still result in multiple agents attempting to intersect the AV simultaneously whereas the \textit{election} behaviour should limit this to a single agent.
+
+% Agent numbers
+The number of agents is also a factor to consider for this demonstration, too few and the likelihood of an agent triggering the assertion will be low and entirely dependent on the initial starting position in the test environment due to differences in speed. The maximum number of agents could be considered all the available grid locations (1.5m spacing) on the pavement without overlap.
+As the number of agents, $nA$, tends to this maximum the probability of hitting the coverage point using a random class increases significantly as more agents appear in the road with an increase in computation expense. As $nA$ increases using more intelligent behaviour methods, suitable agents to trigger the assertion precondition should be found more readily resulting in shorter and hence more efficient tests. The range of $nA$ explored was 1-20.
+
+
 
 
 
@@ -472,7 +474,7 @@ For each test generated that met the precondition, the CPU time taken to execute
 
 \begin{figure}[!t]
 	\centering
-\includegraphics[width=0.48\textwidth]{TimeCPU_log.pdf}
+\includegraphics[width=0.48\textwidth]{TimeCPU.pdf}
 	\caption{The CPU time taken to execute the agent actions averaged over 1000 runs.}
 	\label{CPUTime}
 \end{figure}
@@ -506,7 +508,7 @@ The directed agents show improved performance over the random class for $nA=1$ b
 
 \begin{figure}[!t]
 	\centering
-\includegraphics[width=0.48\textwidth]{Time.pdf}
+\includegraphics[width=0.48\textwidth]{TimeSimTicks.pdf}
 	\caption{The average time taken for an agent to find a successful test, $t_{g}$.}
 	\label{Time}
 \end{figure}
