@@ -306,8 +306,8 @@ This is a conceptual proof and not a complete verification process, choosing onl
 This section describes a case study to explore the proposed test generation method.%
 \footnote{ Code used is available at \url{github.com/TSL-UOB/CAV-MAS}.} %
 %
-The aim is to generate tests that exercise the assertion that the AV should avoid collisions with other traffic participants. %
-The precondition for this assertion is activated when an entity (pedestrian) intrudes in the path of the AV which can be avoided either by braking or manoeuvring, see Fig.~\ref{gridRoad}. Intrusions that fall within the stopping distance of the AV (12m according to~\cite{codes2015highway}) are not considered interesting at they result in unavoidable collision. %
+The aim is to generate tests that exercise the assertion that the AV should avoid collisions with other traffic participants given the precondition is activated. %
+The precondition is activated when an entity (pedestrian) intrudes in the path of the AV which can be avoided either by braking or manoeuvring, see Fig.~\ref{gridRoad}. Intrusions that fall within the stopping distance of the AV (12m at 20mph~\cite{codes2015highway}) are not considered interesting as they result in unavoidable collision. %
 %
 %In this case the entity is a pedestrian and an avoidable intrusion to the path of the AV is defined as TTC<1s (Time To Collision)%
 %
