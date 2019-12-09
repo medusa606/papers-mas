@@ -44,7 +44,7 @@ Simulation-based verification is beneficial for assessing otherwise dangerous or
 
 \end{abstract}
 \begin{IEEEkeywords}
-Test Generation, Simulation, Autonomous Driving, Verification, Multi-Agent System, Testing Agent
+Test Generation, Simulation, Autonomous Driving, Verification, Multi-Agent System, Test Agent
 \end{IEEEkeywords}
 \IEEEpeerreviewmaketitle
 
@@ -314,34 +314,39 @@ Test agents have also been proposed by Enoiu et al.~\cite{Enoiu2019} for regress
 This section describes a case study to explore the proposed agent-based test generation method.%
 \footnote{The code used is available at \url{github.com/TSL-UOB/CAV-MAS}.} %
 %
-Our aim is to generate tests that exercise an assertion that requires the AV to avoid collisions with other road users, provided that an entity, a pedestrian in this case, intrudes in the path of the AV in such a way that a collision can be avoided by the AV either by braking or manoeuvring. In Fig.~\ref{gridRoad} this is illustrated by the `Precondition Zone', i.e.\ the area of interest in which the assertion is activated.
+Our aim is to generate tests that exercise an assertion that requires the AV to avoid collisions with other road users, provided that such road user, a pedestrian in this case, intrudes in the path of the AV in such a way that a collision can be avoided by the AV either by braking or manoeuvring. In Fig.~\ref{gridRoad} this is illustrated by the `Precondition Zone', i.e.\ the area of interest in which the assertion is activated.
 %
-In the following, we shall term tests that activate the assertion \textit{successful} tests as they count towards assertion coverage. 
+In the following, we shall term tests that activate the assertion \textit{successful\/} tests; these count towards assertion coverage. 
 %
 % The precondition is activated when an entity (pedestrian) intrudes in the path of the AV which can be avoided either by braking or manoeuvring, see the `Precondition Zone' in Fig.~\ref{gridRoad}. 
-Intrusions that fall within the `Stopping Distance' of the AV, i.e.\ a zone of 12m length at 30km/h~\cite{codes2015highway} as marked in Fig.~\ref{gridRoad}, are not considered interesting as they result in unavoidable collisions and tests of this type are of limited use~\cite{Tuncali2018}. 
+Intrusions that fall within the `Stopping Distance' of the AV~\cite{codes2015highway}, i.e.\ the 9m long zone 
+% KIE: changed from 12m to 9m to match the picture - unsure which one is correct, though :(
+directly ahead of the AV when driving at 30km/h, equivalent to {\raise.17ex\hbox{$\scriptstyle\sim$}}20mph (miles per hour) as marked in Fig.~\ref{gridRoad}, are not considered interesting as they result in unavoidable collisions; tests of this type are of limited use~\cite{Tuncali2018}. 
 %
 %In this case the entity is a pedestrian and an avoidable intrusion to the path of the AV is defined as TTC<1s (Time To Collision)%
+
+A single assertion is chosen so that we can study the fundamental properties of agent-based test generation in a simple setting in comparison to using random test generation techniques.
 %
-A single assertion is chosen so that we can study the fundamental properties of agent-based test generation in a simple setting.
-%
-Moreover, we do not consider the test result (pass or fail), i.e.\ the behaviour of the AV in response to the assertion being activated. 
+Moreover, in this investigation we do not consider the test result (pass or fail), i.e.\ the behaviour of the AV in response to the assertion being activated. 
 
 
 %------------------- Test Environment -----------------------------
 \subsection{Test Environment}
-The testing environment, see Fig.~\ref{gridRoad} is a straight two-lane road 99m long and each lane is 6m wide. Pavements are on both sides of the road which are three meters in width giving a total size is 18m x 99m. 
+The test environment, see Fig.~\ref{gridRoad} is a straight two-lane 99m road with two 6m wide lanes. Pavements are on both sides of the road which are three meters in width giving a total area of 18m$\times$99m. 
 %
-The AV velocity is 9.0 m/s (equivalent to {\raise.17ex\hbox{$\scriptstyle\sim$}}20 mph) and the pedestrian velocity is 1.4 m/s (equivalent to {\raise.17ex\hbox{$\scriptstyle\sim$}}3 mph). The map is discretised with 1.5 meter resolution for simple division into the AV and pedestrians velocities. Thus, in the discretised world the AV velocity is 6 cell/sec and the pedestrians velocity is 1 cell/sec. The total number of map cells is 12 x 66 = 792 cells. 
+The AV velocity is 9.0m/s (equivalent to {\raise.17ex\hbox{$\scriptstyle\sim$}}20mph) and the pedestrian velocity is 1.4 m/s (equivalent to {\raise.17ex\hbox{$\scriptstyle\sim$}}3mph). The map is discretised with 1.5m resolution for simple division into the AV and pedestrians' velocities. Thus, in the discretised world the AV velocity is 6 cells/s and the pedestrians' velocity is roughly 1 cell/s. The total number of map cells is 12$\times$66 = 792 cells. 
 
-The AV travels along the left hand lane of the road starting at cell $y=0$ and travelling to the end, cell $y=66$. If the assertion is triggered or the AV reaches the end of the road then the test is restarted. The AV occupies an area 4.5x3m equivalent to 4x2 cells. There are no other vehicles and the right hand side of the road is unoccupied.
+The AV travels along the left-hand lane of the road starting at cell $y=0$ and travelling to the end, cell $y=66$. If the assertion is triggered or the AV reaches the end of the road, then the test is restarted. The AV occupies an area 4.5m$\times$3m equivalent to 3$\times$2 cells. There are no other vehicles and the right-hand side of the road is unoccupied.
 
-The environment is initialised with the agents spawned randomly on any valid pavement area. When the environment is reset new random locations are set for the agents. Control over random locations are set using a fixed seed based on the experiment number and so initial spawn locations are repeatable %, i.e. An experiment with 5 agents using a random method with have the same starting locations as using any other method 
-which ensures valid comparison between experiments.
+The environment is initialised with the agents spawned randomly on any valid pavement area. When the environment is reset, new random locations are chosen for the agents. Random locations are controlled by using a fixed seed that is based on the experiment number; thus, initial spawn locations become repeatable (through using the same seed), %, i.e. An experiment with 5 agents using a random method with have the same starting locations as using any other method 
+which ensures a fair comparison between different experiments.
 
-The precondition is activated if an agent is found in the \textit{precondition zone} of the AV which extends 6 cells forwards of the `stopping distance' of the vehicle,~Fig.\ref{gridRoad}. %Any agent found in this area is defined as a valid test and the environment is reset.
+To activate the assertion, the precondition must be satisfied, i.e.\ an agent is found in the \textit{`Precondition Zone'} of the AV which extends 6 cells forwards of the `Stopping Distance' of the vehicle,~Fig.\ref{gridRoad}. 
 %
-Some areas of the environment are impossible for the agents to intersect the AV and are therefore invalid spawn locations, shown in Fig.~\ref{gridRoad}. %On the left hand-side of the left pavement a pedestrian needs to move three cells to the right to reach the left part of the centre of the left lane. This is equivalent to three seconds. In this time the AV crosses 18 units. Therefore, the first 18 cells of the left-hand side of the left pavement are dead-zone where pedestrians cannot intersect the car if spawn inside this zone. Similarly, the first 12 cells of the right-hand side of the left pavement, the first 36 cells of the left-hand side of the right pavement and the first 54 cells of the right-hand side of the right pavement are all invalid spawn locations. 
+Under the given test environment, it is impossible for an agent to move into the AV's path from some areas within the environment. These are marked in dark grey in Fig.~\ref{gridRoad} and labelled invalid spawn locations. 
+
+
+Spawning in some areas of the environment impossible for the agents to intersect the AV and are therefore invalid spawn locations, shown in Fig.~\ref{gridRoad}. %On the left hand-side of the left pavement a pedestrian needs to move three cells to the right to reach the left part of the centre of the left lane. This is equivalent to three seconds. In this time the AV crosses 18 units. Therefore, the first 18 cells of the left-hand side of the left pavement are dead-zone where pedestrians cannot intersect the car if spawn inside this zone. Similarly, the first 12 cells of the right-hand side of the left pavement, the first 36 cells of the left-hand side of the right pavement and the first 54 cells of the right-hand side of the right pavement are all invalid spawn locations. 
 
 %On the right hand-side of the left pavement a pedestrian needs to move two cells to the right to reach the left part of the centre of the left lane. This is equivalent to two seconds. In this time the AV crosses 12 units. Therefore, the first 12 cells of the left-hand side of the left pavement are invalid spawn locations. On the left hand-side of the right pavement a pedestrian needs to move six cells to the right to reach the left part of the centre of the left lane. This is equivalent to six seconds. In this time the AV crosses 36 units. Therefore, the first 36 cells of the left-hand side of the right pavement are dead-zone (pedestrians cannot intersect the car if spawn inside this zone). On the right hand-side of the right pavement a pedestrian needs to move nine cells to the right to reach the left part of the centre of the left lane. This is equivalent to nine seconds. In this time the AV crosses 54 units. Therefore, the first 54 cells of the left-hand side of the right pavement are dead-zone (pedestrians cannot intersect the car if spawn inside this zone). 
 
@@ -350,7 +355,7 @@ Some areas of the environment are impossible for the agents to intersect the AV 
 \begin{figure}[!t]
 	\centering
 \includegraphics[width=0.48\textwidth]{RoadLayout.pdf}
-	\caption{Test environment at full scale (upper) and in detail (lower) including valid and invalid spawn locations for the pedestrians and the position and direction of the AV.}
+	\caption{Test environment at full scale (upper part) and in detail (lower part), marking valid and invalid spawn locations for the pedestrians and indicating the position and direction of the AV (upper part).}
 	\label{gridRoad}
 \end{figure}
 
