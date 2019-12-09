@@ -128,8 +128,8 @@ In particular, simulation-based testing offers the opportunity to increase the n
 \begin{figure}[!t]
 	\centering
 \includegraphics[width=0.48\textwidth]{taxonomy.png}
-	\caption{Taxonomy of model-based test generation, from~\cite{utting2012taxonomy}}
-	\label{taxonomy}
+	\caption{Taxonomy of model-based test generation, from~\cite{utting2012taxonomy}.}
+	\label{f:taxonomy}
 \end{figure}
 
 
@@ -164,98 +164,123 @@ In particular, we are interested in how agent-based test generation compares to 
 %
 Our results suggest that generating tests using testing agents significantly improves upon random and simultaneously provides  driving scenarios that are more realistic than those obtained by random test generation.
 
-We regard agent-based test generation as a contribution to the well-established model-based test generation paradigm. A taxonomy of model-based test generation from~\cite{utting2012taxonomy} is given in Figure~\ref{taxonomy}.
+We regard agent-based test generation as a contribution to the well-established model-based test generation paradigm. A taxonomy of model-based test generation from~\cite{utting2012taxonomy} is given in Figure~\ref{f:taxonomy}.
 %
 The agent-based technique creates two new entries in that taxonomy, a new Paradigm under Model Specification, \textit{Agent-based}, and a new Technology under Test Generation, \textit{Agency}, which includes reactive reasoning, causality and strategic planning between multiple agents.
 %
-In this paper we use an agent-based model to specify the test environment of the AV. Agency is given to the key dynamic entities in the test environment that interact with the AV, in our case pedestrians. Agency, implemented through a belief-desire-intention (BDI) agent interpreter~\cite{bordini2005jason} is then employed to generate tests based on the multi-agent system that represents the test environment. Note that other test generation techniques, such as random generation, which we use as baseline for evaluation, or model checking~\cite{Bordini2006}, can also be applied to an agent-based model.	
+In this paper we use an agent-based model to specify the test environment of the AV. Agency is given to the key dynamic entities in the test environment that interact with the AV, in our case pedestrians. Agency, implemented through a belief-desire-intention agent interpreter~\cite{bordini2005jason} is then employed to generate tests based on the multi-agent system that represents the test environment. Note that other test generation techniques, such as random generation, which we use as baseline for evaluation, or model checking~\cite{Bordini2006}, can also be applied to an agent-based model.	
 
-This paper is structured as follows. In the next section we introduce the testbench architecture used in our experiment and the terminology we will adopt throughout the paper. In Section~\ref{s:background} we review related work on test generation for simulation-based AV verification. Section~\ref{s:case-study} presents our case study, which is centred around test generation for a collision avoidance scenario. Results are presented and discussed in Section~\ref{s:results}. We conclude in Section~\ref{s:conclusion} and give an outlook on future work. 
+This paper is structured as follows. In the next section we introduce the terminology we will adopt throughout the paper and present the testbench architecture used in our experiment. In Section~\ref{s:background} we review related work on test generation for simulation-based AV verification and introduce the basics of multi-agent systems. Section~\ref{s:case-study} presents our case study, which is centred around test generation for a collision avoidance scenario. Results are presented and discussed in Section~\ref{s:results}. We conclude in Section~\ref{s:conclusion} and give an outlook on future work. 
 
 \section{Testbench Architecture and Terminology}\label{s:testbench}
 %----------------------------------------------------------
-% Test Bench Architecture
-The proposed test bench, see Fig.~\ref{testbench}, is driven by a specification for the experiment which defines the scene and scenario including all dynamic actors. 
-%
-The experiment or test case specification specifies the test inputs, execution conditions for an item to be tested~\cite{StandardsBoard1990} to the test bench. 
-%
-The Vehicle Behaviour Interface (VBI) connects the AV controller to the simulator. It provides the simulator with the driving decisions of the AV and forwards updates on the scene to the AV controller. 
-%
-A geospacial database logs the AV and all other actors to enable post-simulation assertion checking. % as described in~\cite[ref our test bench paper]. 
 
 %----------------------------------------------------------
 % Scene, Scenario definitions
-As well defined in~\cite{Ulbrich2015}; Scene refers to all static objects including the road network, street furniture and a snapshot of any dynamic elements. Any dynamic element whose actions or behaviour may change with respect to time are considered actors which may include other road vehicles, pedestrians and traffic signals. 
+We will adopt the terminology defined in~\cite{Ulbrich2015}, where \textit{scene} refers to all static objects including the road network, street furniture, environment conditions and a snapshot of any dynamic elements. Dynamic elements are the elements in a scene whose actions or behaviour may change over time, these are considered actors and may include other road vehicles, cyclists, pedestrians and traffic signals. 
 %
-A situation is defined as the subjective conditions and determinants for behaviour at a particular point in time. 
+A \textit{situation} is defined as the subjective conditions and determinants for behaviour at a particular point in time. 
 %
-The scenario is defined as a temporal development between several scenes which may be specified by specific goals and values.
+The \textit{scenario} is then defined as a temporal development between several scenes which may be specified by specific goals and values.
+
+% Test Bench Architecture
+The proposed testbench, see Fig.~\ref{f:testbench}, is driven by a specification for the experiment which defines the scene and scenario including all dynamic actors. 
+%
+The experiment or test case specification specifies the test inputs, i.e.\ the execution conditions for an item to be tested~\cite{StandardsBoard1990}.
+%
+The vehicle behaviour interface (VBI) connects the AV controller (vehicle control) to the simulator. It provides the simulator with the driving decisions of the AV and forwards updates on the scene to the AV controller. 
+%
+A geospacial database logs the AV and all other actors to enable post-simulation assertion checking. 
+
 
 \begin{figure}[!t]
 	\centering
 \includegraphics[width=0.48\textwidth]{TestBenchMonotone.pdf}
-	\caption{Test bench design.}
-	\label{testbench}
+	\caption{Testbency Architecture.}
+	\label{f:testbench}
 \end{figure}
 
 %
-The test case specification may be generated in a number of ways familiar to the verification engineer. Tests may be manually generated which will be both valid and accurate in producing the desired test conditions but at the highest cost. Random methods are usually employed at an early stage of testing to get coverage quickly but potentially suffer from generating invalid tests or tests that are not interesting, where interesting in this case refers to exercising the decision making processes of the AV. Model-based test generation sits between these methods in terms of validity of tests and the cost to produce them. Model-based testing requires a model that encodes the behaviour of the test environment then used to generate tests for execution.
+Given the experiment specification, tests may be generated in a variety of ways that differ mainly in their effectiveness and efficiency. 
+%
+Manually generated tests are typically effective in achieving verification objectives, but are considered expensive due to the high engineering cost involved. 
+%
+Random methods are usually employed at the early stages of testing to build up coverage quickly. They suffer, however, from a high number of invalid tests being generated and, even when constrained to produce only valid tests, the tests generated are often not interesting wrt.\ the verification objectives, in our case this refers to exercising the collision-avoidance decision making logic of the AV. 
+%
+Model-based test generation offers an alternative that produces valid and interesting tests at the cost of developing a model that faithfully encodes the behaviour of the test environment. This model can then be explored in a variety of ways, see Figure~\ref{f:taxonomy}.
 %
 %----------------------------------------------------------
 % Summary
-The proposed method focuses on the development between scenes dictated by the goals or values of the dynamic actors in the scene. A suitable framework for this approach to control is the Multi-Agent Systems paradigm. 
+This paper explores how the agency that is naturally present in the multi-agent system that represents the dynamic actors in a scene can be used for model-based generation of test scenarios in the context of simulation-based AV verification. 
 
 
-
-%----------------------------------------------------------
-% MAS background and use of MAS for TG (morse, norway - in email from KE)
-\section{Multi-Agent Systems}
-
-Georgeff and Lansky were key in the development of the belief-desire intention (BDI) agent programming approach~\cite{georgeff1987reactive} and also in the early work of multi-agent systems~\cite{georgeff1988communication}.
-%
-%Waters et al. describe improvements to BDI agents through modifying the intention selection method using priority-based schedulers. They propose \textit{enablement checking} where an agent should not attempt to pursue an intention if there is no way to accomplish it and claim substantial benefits can be gained when 'running vulnerable programs in dynamic environments'~\cite{Waters2015}. This is an interesting approach and highly relevant to the AV verification domain potentially preventing unwanted emergent agent behaviour such as 'zombie attack'.
-%
-%Schut et al. argue that the intentions of a rational agent are not static and should reconsider their intentions if they cannot be acted upon~\cite{Schut2004}. Considering the degree of inaccessibility of the goal and cleverly considering intention reconsideration as an action the authors use POMDP to find the optimal intention reconsideration policy. Faccin et al. propose higher level intention selection using a meta-model to learn and predict plan outcomes~\cite{faccin2015bdi} demonstrating positive experimental results.
-%
-%----------------------------------------------------------
-% Automated TG
-Automatically generating stimulus that will increase functional coverage is a key challenge in simulation based verification and is a key vitue of constrained pseudo-random techniques. But such techniques are also far from completely automated, as the verification engineer must supply the suitbale constriants which become ever more complex in real driving scenarios. Feedback based coverage-driven generation (CDG) employs machine learning techniques to automatically generate tests based on rewards from a neural network or Markov Decision Process (MDP). Inductive Logic Programming based Coverage Driven Generation (ILP-CDG) has been shown to improve coverage closure by training on data generated during psuedo-random test generation and learning rules to constrain subsequent simulations~\cite{Eder2007}.
-%
-%----------------------------------------------------------
-% MAS Automated TG
-Combining the BDI framework with an automated test generation approach leads to the idea of a software agent capable of generating tests. Intelligent agents have been used in the human robot interaction (HRI) domain with a coverage feedback driven generation approach using reinforcement learning to explore collaborative manufacturing~\cite{Araiza-Illan2016}. The idea of a test agent has also been proposed by Enoiu et al.,~\cite{Enoiu2019} for regression testing although more for test selection from a library rather than generation, where agents decide what tests to execute and with what prioritisation and includes inter-agent messaging.
-%
-%----------------------------------------------------------
-% MAS Automated TG
-Hawkins et al.~\cite{hawkins2019situation} use the Multi-Agent Simulator Of Neighbourhoods (MASON) platform to filter situation coverage from a small model for an autonomous robot (AR) to efficiently ensure parameter combinations are not repeated.
-
-%----------------------------------------------------------
-% lead from MAS background into literature
-
-
+\section{Background}\label{s:background}
 
 %------------------- Related -----------------------------
-\section{Related Work}\label{s:background}
+\subsection{Related Work}\label{s:background}
 % Describe conventional methods for test generation for verification, e.g. formal methods, random methods, hand-written tests.
 % Discuss the ways that you can generate tests 1)use random 2) use engineers to write tests 3)AI/ML methods ...
 
-A good overview of the challenges currently faced in software testing of autonomous vehicles are well document by Koopman highlighting the importance of fault injection into the testing domain~\cite{Koopman2016} and how to decide what aspects of the system need to be tested in the areas of operational design domains, event detection and vehicle manoeuvres~\cite{Koopman2019}. 
+An overview of the challenges currently faced in software testing of AVs is given by Koopman, highlighting the importance of fault injection into the testing domain~\cite{Koopman2016} and how to decide what aspects of the system need to be tested in the areas of operational design domains, event detection and vehicle manoeuvres~\cite{Koopman2019}. 
 %
-Describing a driving scene in natural language has been shown to be an effective framework for scenario generation which can also be automated based formalised rules and knowledge~\cite{Bagschik2018} or even evolving from ISO safety standards~\cite{Menzel2018}. 
+Describing a driving scene in natural language has been shown to be an effective framework for scenario generation. This can also be automated based on formalised rules and knowledge~\cite{Bagschik2018} or even evolved from ISO safety standards~\cite{Menzel2018}. 
 %
-Hallenbach et al. take the approach to test generation of developing composite metrics for traffic quality and using them to determine if a scenarios is `critical' or not and therefore worth exploring further~\cite{Hallerbach2018}. 
+Hallenbach et al.\ take the approach to test generation of developing composite metrics for traffic quality and using them to determine if a scenario is `critical' or not and therefore worth exploring further~\cite{Hallerbach2018}. 
 %
-Generating targeted test cases can be a more efficient way to get complete coverage. By finding tests that exercise the complete decision making domain we can do away with the `unnecessary miles' of testing precisely explored by Mullins et al.,~\cite{Mullins2018} where they describe a test generation method based on the transitions between decision making performance modes of the AV. 
+Generating targeted test cases can be a more efficient way to achieve verification objectives. 
 %
-Saigol et al.~\cite{Saigol2018} discuss the need for \textit{smart actor control} which may lead to interesting scenarios when interacting with the AV in their proposed test bench framework for automated testing. 
+For example, Mullins et al.~\cite{Mullins2018} describe a test generation method that is focused on exploring the transitions between decision making performance modes of the AV, with the aim to find tests that exercise the complete decision making logic. 
+%
+Saigol et al.~\cite{Saigol2018} discuss the need for \textit{smart actor control} which they expect may lead to interesting scenarios when these interact with the AV a testbench framework for automated testing. 
 %
 Rocklage et al.~\cite{Rocklage2017} approach the problem of test generation from the viewpoint of the other traffic participants, using a trajectory planner to ensure coverage over a fixed list of scene parameters.
+%
+Exploiting agency for test generation, however, has not yet been investigated. 
 
 % There are many factors that may influence the choice of test generation for your application, here we choose to focus on accuracy and cost, see~Fig\ref{cost_accuracy}. Accuracy in this context is defined as the ratio of tests that exercise the targeted assertion compared to the total number of tests generated. In another way this is the efficiency of the test generation method in 'finding' coverage.
 
 % Cost in this context is defined as either computational costs or time put in to write the test by a verification engineer. As shown in Fig\ref{cost_accuracy}, some methods may be relatively low cost with low accuracy such as a random method. Random based methods are very popular for AV verification (refs) with the idea being that enough low probability events over millions of miles of testing will give auditors the confidence that enough corner cases have been experienced.
 
 % The other end of the spectrum takes us to hand written tests by verification engineers or those with vested interests in specific scenarios, e.g. a local authority assessing safety of a new road layout. The test case written by the engineer will almost certainly achieve the desired coverage point but at a much higher cost than a random method.
+
+
+%----------------------------------------------------------
+% MAS background and use of MAS for TG (morse, norway - in email from KE)
+\subsection{Multi-Agent Systems}
+
+Georgeff and Lansky were key in the development of the belief-desire intention (BDI) agent programming approach~\cite{georgeff1987reactive} and also in the early work of multi-agent systems~\cite{georgeff1988communication}.
+%
+In a multi-agent system, multiple intelligent agents interact in order to collectively solve problems that are too difficult or impossible for individual agents to achieve. 
+%
+A multi-agent system includes a set of software agents and their environment. Agents can be equipped with varying degrees of agency, starting from  passive agents, such as obstacles, including active agents that have goals of low complexity, such as pedestrians that act as part of a group, to rational agents that are capable of reasoning based on a cognitive model of the situation, their perception of the surrounding environment, and a set of rules they can use for strategic planning and communication with other agents in the system.
+%
+The individual agents are considered \textit{autonomous} and in control of their behaviour within the multi-agent system as they pursue their goals. 
+% 
+This results in self-organisation and self-direction towards achieving a common goal. 
+
+%Waters et al. describe improvements to BDI agents through modifying the intention selection method using priority-based schedulers. They propose \textit{enablement checking} where an agent should not attempt to pursue an intention if there is no way to accomplish it and claim substantial benefits can be gained when 'running vulnerable programs in dynamic environments'~\cite{Waters2015}. This is an interesting approach and highly relevant to the AV verification domain potentially preventing unwanted emergent agent behaviour such as 'zombie attack'.
+%
+%Schut et al. argue that the intentions of a rational agent are not static and should reconsider their intentions if they cannot be acted upon~\cite{Schut2004}. Considering the degree of inaccessibility of the goal and cleverly considering intention reconsideration as an action the authors use POMDP to find the optimal intention reconsideration policy. Faccin et al. propose higher level intention selection using a meta-model to learn and predict plan outcomes~\cite{faccin2015bdi} demonstrating positive experimental results.
+%
+%----------------------------------------------------------
+% Automated TG
+%Automatically generating stimulus that will increase functional coverage is a key challenge in simulation based verification and is a key virtue of constrained pseudo-random techniques. But such techniques are also far from completely automated, as the verification engineer must supply the suitbale constriants which become ever more complex in real driving scenarios. Feedback based coverage-driven generation (CDG) employs machine learning techniques to automatically generate tests based on rewards from a neural network or Markov Decision Process (MDP). Inductive Logic Programming based Coverage Driven Generation (ILP-CDG) has been shown to improve coverage closure by training on data generated during psuedo-random test generation and learning rules to constrain subsequent simulations~\cite{Eder2007}.
+
+%----------------------------------------------------------
+% MAS Automated TG
+Combining the BDI framework with an automated test generation approach leads to the concept of a software agent capable of generating tests. Intelligent agents have been used in the human robot interaction (HRI) domain with a coverage feedback driven generation approach using reinforcement learning to explore collaborative manufacturing~\cite{Araiza-Illan2016}. 
+%
+Test agents have also been proposed by Enoiu et al.~\cite{Enoiu2019} for regression testing, although they are used more for test selection from a library of tests, rather than for test generation. These agents use inter-agent messaging to decide what tests to execute and with what prioritisation.
+%
+%----------------------------------------------------------
+% MAS Automated TG
+Hawkins et al.~\cite{hawkins2019situation} use the Multi-Agent Simulator Of Neighbourhoods (MASON) platform to filter tests wrt.\ situation coverage from a small model for an autonomous robot to efficiently ensure parameter combinations are not repeated.
+
+%----------------------------------------------------------
+% lead from MAS background into literature
+
+
+
 
 
 %------------------- Problem -----------------------------
