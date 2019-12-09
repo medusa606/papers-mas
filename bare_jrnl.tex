@@ -172,7 +172,7 @@ In this paper we use an agent-based model to specify the test environment of the
 
 This paper is structured as follows. In the next section we introduce the terminology we will adopt throughout the paper and present the testbench architecture used in our experiment. In Section~\ref{s:background} we review related work on test generation for simulation-based AV verification and introduce the basics of multi-agent systems. Section~\ref{s:case-study} presents our case study, which is centred around test generation for a collision avoidance scenario. Results are presented and discussed in Section~\ref{s:results}. We conclude in Section~\ref{s:conclusion} and give an outlook on future work. 
 
-\section{Testbench Architecture and Terminology}\label{s:testbench}
+\section{Terminology and Testbench Architecture}\label{s:testbench}
 %----------------------------------------------------------
 
 %----------------------------------------------------------
@@ -211,7 +211,15 @@ Model-based test generation offers an alternative that produces valid and intere
 %
 %----------------------------------------------------------
 % Summary
-This paper explores how the agency that is naturally present in the multi-agent system that represents the dynamic actors in a scene can be used for model-based generation of test scenarios in the context of simulation-based AV verification. 
+Our paper explores how the agency that is naturally present in the multi-agent system that represents the dynamic actors in a scene can be used for model-based generation of test scenarios in the context of simulation-based AV verification. 
+
+% \todo[inline]{Natural = waiting for interesting event, Edge case = find only interesting events.}
+One could argue that the simulation environment presented to the AV should be as close to the real world it seeks to emulate as the most realistic proving ground. Such efforts seek to reduce the \textit{reality gap}, %~\cite{Jakobi1995} 
+providing the most likely scenarios and actor behaviour. This can be achieved by monitoring real traffic scenarios, e.g.\ tracking individual vehicles, cyclists and pedestrians, and building behavioural models for each of the tracked entities~\cite{behbahani2019learning}.
+%
+On the other hand, the creation of edge cases, i.e.\ events that are rare under normal circumstances, yet critical for gaining confidence in the correct behaviour of the AV, is important to reach verification objectives in a timely manner.
+%
+This is exactly what the agent-based test generation approach introduced in this paper is aimed at.  
 
 
 \section{Background}\label{s:background}
@@ -268,20 +276,17 @@ This results in self-organisation and self-direction towards achieving a common 
 
 %----------------------------------------------------------
 % MAS Automated TG
-Combining the BDI framework with an automated test generation approach leads to the concept of a software agent capable of generating tests. Intelligent agents have been used in the human robot interaction (HRI) domain with a coverage feedback driven generation approach using reinforcement learning to explore collaborative manufacturing~\cite{Araiza-Illan2016}. 
+Combining the BDI framework with an automated test generation approach leads to the concept of a software agent capable of generating tests.
+Such intelligent, agent-based test generation has first been applied in the human-robot interaction domain~\cite{Araiza-Illan2016}, where a coverage-driven test generation approach was supplemented with reinforcement learning to improve the efficiency and effectiveness of testing the critical part of a robot-to-human handover task within a collaborative manufacturing scenario. 
 %
 Test agents have also been proposed by Enoiu et al.~\cite{Enoiu2019} for regression testing, although they are used more for test selection from a library of tests, rather than for test generation. These agents use inter-agent messaging to decide what tests to execute and with what prioritisation.
 %
 %----------------------------------------------------------
 % MAS Automated TG
-Hawkins et al.~\cite{hawkins2019situation} use the Multi-Agent Simulator Of Neighbourhoods (MASON) platform to filter tests wrt.\ situation coverage from a small model for an autonomous robot to efficiently ensure parameter combinations are not repeated.
+%Hawkins et al.~\cite{hawkins2019situation} use the Multi-Agent Simulator Of Neighbourhoods (MASON) platform to filter tests wrt.\ situation coverage from a small model for an autonomous robot to efficiently ensure parameter combinations are not repeated.
 
 %----------------------------------------------------------
 % lead from MAS background into literature
-
-
-
-
 
 %------------------- Problem -----------------------------
 % \section{Problem and Hypothesis}
@@ -297,30 +302,6 @@ Hawkins et al.~\cite{hawkins2019situation} use the Multi-Agent Simulator Of Neig
 % The next level would be agents that can act on multiple assertions and their intention selection is a feedback controlled from the coverage checker.
 % This is done to assess that the test generation conception can generate valid tests and how this compares to random based techniques.
 
-
-%------------------- Natural Behaviour vs. Edge Case ----------------------
-\subsection{Natural Behaviour vs. Edge Case}
-% \todo[inline]{Natural = waiting for interesting event, Edge case = find only interesting events.}
-One could argue that the simulation environment presented to the AV should be as close to the real world it seeks to emulate as the most realistic proving ground. In this case such efforts seek to reduce the \textit{reality gap}~\cite{Jakobi1995} providing the most likely scenarios and actor behaviour. One approach is to monitor real traffic scenarios from traffic monitoring cameras, tracking individual vehicles, cyclists and pedestrians and from these build behavioural models for each road scene for which you have traffic data~\cite{behbahani2019learning}. 
-
-
-%--------------------------------------------------------
-% What do we want to do with these ideas - use the agent based framework to drive test generation
-This research proposes that agent based test generation can be used as an efficient and scalable method for AV verification. Within existing multi-agent frameworks, e.g. JASON~\cite{bordini2005jason} agents are given specific goals and actions which are updated based on perceptions of the environment. The proposed implementation would work similarly, where agents (cars, pedestrians, cyclists, traffic lights etc.) are given goals that relate to the coverage task required. As such, simulated driving scenarios are not prescriptive at the outset but evolve with time based on the actions of the test vehicle.
-
-
-
-
-%--------------------------------------------------------
-%------------------- Summary ----------------------------
-
-In this paper we explore the use of a multi-agent system approach to test generation. In theory the MAS technique should achieve better accuracy than a random method as agents can be encoded with certain behaviours that drive the scenario towards a precondition for the assertion that needs to be tested. 
-%
-This should incur a relatively small cost on the development engineer due to the abstraction of goals in agent based programming but at the cost of additional lines of code and resources used at runtime. 
-%
-A small example is used to illustrate these metrics in a single scene that uses a MAS framework, e.g. Jason~\cite{bordini2005jason}, to generate interesting tests. A full description of the assessment is given in Section~\ref{s:case-study}. 
-%
-This is a conceptual proof and not a complete verification process, choosing only a single assertion may is limited but the goal here is to prove that with a small economic outlay of engineering time we can generate agents that outperform random. 
 
 
 
