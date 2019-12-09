@@ -135,32 +135,36 @@ In particular, simulation-based testing offers the opportunity to increase the n
 
 %----------------------------------------------------------
 % The AV as a DUT/SUV/DUV
-Considering the AV as a device under test (DUT) the verification engineer is presented with a familiar set of tasks entailing the discovery of bugs, corner cases, unanticipated events and to reach complete coverage. %
+Considering the AV as a DUV, the challenge is to generate tests that interact with the AV over a period of time, thereby creating an environment in which the AV needs to respond to the received stimulus while making progress towards its destination. 
 %
-%----------------------------------------------------------
-% Responder
-A suitable analogy of the autonomous vehicle in this context is that of a responder which interacts with an abstracted level of the testing environment and only interacts passively (responds) to a recieved stimulus and whilst also fulfilling it's own objectives is also expected to adhere to legal protocol, which are the expected driving behaviours in response to that stimulus.
+As such, the AV can be classed as a \textit{responder\/} DUV, i.e.\ a DUV that reacts to lower-level stimulus observed on its interfaces with the surrounding environment in order to maintain legally correct driving behaviour and follow the social norms associated with road traffic.
+%
+% RESPONDER (https://verificationacademy.com/cookbook/doc/glossary/responder): A verification component which, similar to a driver, interacts with a lower level of abstraction such as the individual signals on a protocol interface, in order to participate in a protocol. Unlike a driver, responders do not initiate stimulus traffic from a sequence, they respond (slave-like) to traffic observed on the interface in order to maintain legal protocol. Their execution may be controlled by configuration (specifying how they are to respond in general) including some constrained randomization possible within the allowed configuration space, or by sequences of configuration changes (altering the way they respond in a controlled way), or by maintaining some state, e.g. a memory model or register model, which reflects persistent data values deposited by earlier traffic and subsequently retrieved accurately by the responder.
 %
 %----------------------------------------------------------
 % The promise of AGENCY to address verifying responders
-Investigating the opportunity of \textit{agency} to address the challenges of verifying the responder is the principle hypothesis of this research. The task of this software \textit{agent} then becomes targetted with specific goals to find the corner cases, rare events and ensure coverage against traffic regulations which can be encoded in the behaviour of the agent with respect to the coverage point. %
+This paper investigates the benefits of introducing \textit{agency} into the verification environment in order to address the challenges of verifying the responder DUV. 
+%
+Each software agent is tasked with specific goals that aim to achieve verification objectives, e.g.\ reaching coverage targets.
+%
+A set of software agents can then be directed to interact, coordinating their behaviour in response to the AV's observed actions in order to increase the likelihood of rare events occurring during simulation to reach coverage targets faster.
 %
 %----------------------------------------------------------
 % Research Questions
 % -new test generation technique
-Our key research question is: can agent based test generation be used as a form of simulation based verification for autonomous vehicles that will satisfy the requiements without millions of miles of testing? %
+Our key research question is: what are the benefits of using agent-based test generation for the verification of AVs in simulation?
 %
-We aim to show that an agent based test generation method can be considered a potential route to solving the AV verification problem and that test cases generated are better than random.
-%----------------------------------------------------------
-
+In particular, we are interested in how agent-based test generation compares to pseudo-random test generation techniques wrt.\ the following criteria for a 'good' test case, which are inspired by~\cite{fewster1999software}:
+%
 %----------------------------------------------------------
 % What makes a good test case?
-How will this method be considered successful? For this method to be considered a success it must produce stimuli to the responder (simulated AV) that satisfies the condition of a `good' test case. 
+% The challenge here is to find the correct stimulus for the AV which is described by the test case. 
 %
-%The challenge here is to find the correct stimulus for the AV which is described by the test case. 
+\textit{effectiveness} in detecting defects, \textit{efficiency} in minimising the number if tests required to achieve verification goals, \textit{economy} in terms of resource usage during verification as well as during the analysis of the verification results, and also \textit{robustness} towards changes. 
 %
-A good test case should be \textit{effective} (at detecting defects), \textit{efficient} (minimising the number if tests), \textit{economic} (cheap to perform and analyse) and \textit{evolvable} (adaptable to software changes) as defined in~\cite{fewster1999software}. This is explored further in the case study in Section~\ref{CaseStudy}.
+Our results suggest that generating tests using testing agents significantly improves upon random and simultaneously provides  driving scenarios that are more realistic than those obtained by random test generation.
 
+We regard agent-based test generation as a new form of model-based test generation.\todo{Hier weiter.}
 
 % Test generation taxonomy
 The agent based test generation technique will sit alongside and complement the techniques in the existing verification taxonomy~\cite{utting2012taxonomy}. The new method will form a new leaf node at the Test Generation-Technology branch of the existing taxonomy of model-based test generation, Fig.~\ref{taxonomy}. %
@@ -207,7 +211,7 @@ The proposed method focuses on the development between scenes dictated by the go
 
 %----------------------------------------------------------
 % MAS background and use of MAS for TG (morse, norway - in email from KE)
-\subsection{Multi-Agent System}
+\section{Multi-Agent Systems}
 
 Georgeff and Lansky were key in the development of the belief-desire intention (BDI) agent programming approach~\cite{georgeff1987reactive} and also in the early work of multi-agent systems~\cite{georgeff1988communication}.
 %
@@ -503,13 +507,13 @@ The results are assessed aginst the criterea of a `good' test case as described 
 \begin{itemize}
 	\item \textit{Effective}: How effective the method is at generating test cases that detect faults with the responder. The Accuracy metric, defined above, shows how often the agent generates a test case that satisfies the precondition of the assertion and will therefore reveal, or is likely to reveal, defects of the DUT. Fig.~\ref{Accuracy} shows that a small number of directed agents are around twice as effective as random ones and over three times as effective for a single agent.
 	%
-	\item \textit{Exemplary}: An exemplary test case will test multiple aspects of the DUT thereby reducing the number of tests. In this case study, only a single assertion was used so this criteria cannot be assessed although it is a key development for future work discussed in Section~\ref{future}.
+	\item \textit{Exemplary}: An exemplary test case will test multiple aspects of the DUT thereby reducing the number of tests. In this case study, only a single assertion was used so this criteria cannot be assessed although it is a key development for future work discussed in Section~\ref{s:future}.
 	%
 	\item \textit{Economic}: How costly the test case is to run, analyse and debug. The resource cost (CPU time) to execute the agent actions, Fig~\ref{CPUTime} is 4-5 times more expensive for the directed agents than random. An example of the actual values are given in Table~\ref{ResultsTable} $nA=3$, see heading CPU Time. This may be a significant factor in your decision to use an intelligent agent for test generation unless you have abundent CPU resources to hand. %
 	%
 	However, the test generation time, Fig~\ref{Time}, indicates that on average the directed agents find test cases that activate the precondition faster than random in terms of simulation ticks. Therefore, although more resource is allocated to the directed agents they find tests faster overall due to better efficiency, i.e. better return on investment (ROI).
 	%
-	\item \textit{Evolvable}: The maintenance required to adapt the test case to new software changes or \textit{scenes} in our case. In the case study each test generated is of a different scene as the agent position is randomly generated each time. Therefore the directed agents show adapability to new scenes and this attribute is accounted for within the accuracy. This case study could be easily shown to succeed with different road layouts, vehicle speeds, see Section~\ref{future}.
+	\item \textit{Evolvable}: The maintenance required to adapt the test case to new software changes or \textit{scenes} in our case. In the case study each test generated is of a different scene as the agent position is randomly generated each time. Therefore the directed agents show adapability to new scenes and this attribute is accounted for within the accuracy. This case study could be easily shown to succeed with different road layouts, vehicle speeds, see Section~\ref{s:future}.
 \end{itemize}
 
 % \todo[inline]{Do we need to add a new category to this list Eathly, Existent (def.=having reality), Embodied?-  level of natural or expected behaviour? Test cases generated may be both valid and interesting but not realistic - how do we control for this? do we need to? or does it not matter?}
@@ -540,7 +544,7 @@ This analysis above would suggest that the level of agent complexity should be c
 
 
 %----------------- Conclusion ---------------------------
-\section{Conclusion}
+\section{Conclusion and Future Work}\label{s:future}
 The MAS programming paradigm offers rational agency and strategic planning to software agents that have been exploited in this research for test generation. 
 %
 On a small example we show that, by encoding a variety of different behaviours respondent to the agent's perceptions of the test environment, the agent-based approach generates twice as many effective tests than a pseudo-random approach. Furthermore, agents can be encoded to behave more realistically without compromising their effectiveness. %
@@ -550,7 +554,7 @@ Our results suggest that generating tests using testing agents is a promising av
 
 
 
-\subsection{Future Work} \label{future}
+%\subsection{Future Work} 
 %
 In this small case study there is only a single assertion considered. But how agents behave when multiple assertions or \textit{desires} exist will be key to the success of this method. This could be achieved with a number of methods such as MDP and ANN. Furthermore, testing the agents in a variety of different scenes (e.g. different road network) would further validate the directed agent approach.
 %
@@ -563,7 +567,7 @@ Including personality to agents is also another avenue that could provide insigh
 %
 There is also the possibility to have have combination of random and directed agents to ensure the initial 80\% of coverage is satisfied quickly then add more intelligent agents for hole coverage.
 
-
+\todo{without millions of miles of testing?}
 
 
 %----------------- Acknowledgment ---------------------------
