@@ -164,17 +164,15 @@ In particular, we are interested in how agent-based test generation compares to 
 %
 Our results suggest that generating tests using testing agents significantly improves upon random and simultaneously provides  driving scenarios that are more realistic than those obtained by random test generation.
 
-We regard agent-based test generation as a new form of model-based test generation.\todo{Hier weiter.}
-
-% Test generation taxonomy
-The agent based test generation technique will sit alongside and complement the techniques in the existing verification taxonomy~\cite{utting2012taxonomy}. The new method will form a new leaf node at the Test Generation-Technology branch of the existing taxonomy of model-based test generation, Fig.~\ref{taxonomy}. %
+We regard agent-based test generation as a contribution to the well-established model-based test generation paradigm. A taxonomy of model-based test generation from~\cite{utting2012taxonomy} is given in Figure~\ref{taxonomy}.
 %
-This work proposes using an agent based model for test generation. This fits in within the existing taxonomy of model-based testing \cite{utting2012taxonomy} under the test generation - technology branch.
-% \todo[inline]{more/stronger motivation - why agents? what is the challenge/problem?}
+The agent-based technique creates two new entries in that taxonomy, a new Paradigm under Model Specification, \textit{Agent-based}, and a new Technology under Test Generation, \textit{Planning}.
+%
+In this paper we use an agent-based model to specify the test environment of the AV. Agency is given to the key dynamic entities in the test environment that interact with the AV, in our case pedestrians. Planning is then employed to generate tests based on the multi-agent system that represents the test environment. Note that other test generation techniques, such as random generation, which we use as baseline for evaluation, or model checking~\cite{Bordini2006}, can also be applied to an agent-based model.	
 
-% \todo[inline]{mention how there are formal and informal rules of the road, both of which are valid tests Regulators would use the former to assess the safety case for the vehicle, whereas public opinion may be persuaded more by compliance of the latter. Trustworthiness will certainly be composed of both aspects of differing proportions depending on the audience.}
-	
+This paper is structured as follows. In the next section we introduce the testbench architecture used in our experiment and the terminology we will adopt throughout the paper. In Section~\ref{s:background} we review related work on test generation for simulation-based AV verification. Section~\ref{s:case-study} presents our case study, which is centred around test generation for a collision avoidance scenario. Results are presented and discussed in Section~\ref{s:results}. We conclude in Section~\ref{s:conclusion} and give an outlook on future work. 
 
+\section{Testbench Architecture and Terminology}\label{s:testbench}
 %----------------------------------------------------------
 % Test Bench Architecture
 The proposed test bench, see Fig.~\ref{testbench}, is driven by a specification for the experiment which defines the scene and scenario including all dynamic actors. 
@@ -237,7 +235,7 @@ Hawkins et al.~\cite{hawkins2019situation} use the Multi-Agent Simulator Of Neig
 
 
 %------------------- Related -----------------------------
-\section{Related Work}
+\section{Related Work}\label{s:background}
 % Describe conventional methods for test generation for verification, e.g. formal methods, random methods, hand-written tests.
 % Discuss the ways that you can generate tests 1)use random 2) use engineers to write tests 3)AI/ML methods ...
 
@@ -303,7 +301,7 @@ This is a conceptual proof and not a complete verification process, choosing onl
 
 % =======================================================
 %------------------- Method -----------------------------
-\section{Case Study} \label{CaseStudy}
+\section{Case Study} \label{s:case-study}
  
 This section describes a case study to explore the proposed test generation method.%
 \footnote{ Code used is available at \url{github.com/TSL-UOB/CAV-MAS}.} %
@@ -396,8 +394,8 @@ The scoring should reflect the benefits of the method against the desire to gene
 
 
 %------------ Results Discussion ---------------
-\section{Results}
-The results section is split into 5 parts; Accuracy is the ratio of successful tests the agents generated as a ratio of all test runs, Score is a measure of how natural the agents behaved, Combined Score combines accuracy with score, Time is how long the agents took to generate the test in both simulation ticks and CPU time. Both Score and Time have distributions associated with them and as such 95\% confidence intervals are provided.
+\section{Results}\label{s:results}
+The results section is split into 5 parts; Accuracy is the ratio of successful tests the agents generated as a ratio of all tests, Score is a measure of how natural the agents behaved, Combined Score combines accuracy with score, and Time is how long the agents took to generate the test in both simulation ticks and wall clock time. Both Score and Time have distributions associated with them and as such confidence intervals are provided.
 
 
 
@@ -558,7 +556,7 @@ This analysis above would suggest that the level of agent complexity should be c
 
 
 %----------------- Conclusion ---------------------------
-\section{Conclusion and Future Work}\label{s:future}
+\section{Conclusion and Future Work}\label{s:conclusion}
 The MAS programming paradigm offers rational agency and strategic planning to software agents that have been exploited in this research for test generation. 
 %
 On a small example we show that, by encoding a variety of different behaviours respondent to the agent's perceptions of the test environment, the agent-based approach generates twice as many effective tests than a pseudo-random approach. Furthermore, agents can be encoded to behave more realistically without compromising their effectiveness. %
