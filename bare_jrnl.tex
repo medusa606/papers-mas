@@ -321,12 +321,9 @@ Intrusions that fall within the `Stopping Distance' of the AV, 12m at 20mph~\cit
 %
 %In this case the entity is a pedestrian and an avoidable intrusion to the path of the AV is defined as TTC<1s (Time To Collision)%
 %
-A single assertion is chosen to isolate assessment of the test generation concept and not to demonstrate a complete verification process. %
+A single assertion is chosen so that we can study the fundamental properties of agent-based test generation in a simple setting.
 %
-% The assertion chosen in this example is collision avoidance with a pedestrian and a successful test would be when the pedestrian enters the emergency braking zone of the DUV, i.e. within a 1s time-to-collision (TTC) window of the leading edge of the vehicle. 
-The outcome of the test and the behaviour of the AV are not the focus here, but that tests are generated using the multi-agent framework.  %that satisfy the precondition for the assertion. 
-
-% The aim is to generate tests that exercise the precondition for a single assertion: collision avoidance. The precondition in this case states that for the associated decision making process in the AV to be exercised an entity in the path of the vehicle should be avoided either by braking or manoeuvring.  A single assertion is chosen to isolate assessment of the test generation concept and not a demonstrate a complete verification process. The assertion chosen in this example is collision avoidance with a pedestrian and a successful test would be when the pedestrian enters the emergency braking zone of the DUV, i.e. within a 1s time-to-collision (TTC) window of the leading edge of the vehicle. The outcome of the test and the behaviour of the AV are not the focus here, but that tests are generated using the agent framework that satisfy the precondition for the assertion. 
+Moreover, we do not consider the test result (pass or fail), i.e.\ the behaviour of the AV in response to the assertion being activated. 
 
 
 %------------------- Test Agents -----------------------------
