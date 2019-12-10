@@ -223,7 +223,7 @@ Our paper explores how the agency that is naturally present in the multi-agent s
 One could argue that the simulation environment presented to the AV should be as close to the real world it seeks to emulate as the most realistic proving ground. Such efforts seek to reduce the \textit{reality gap}, %~\cite{Jakobi1995} 
 providing the most likely scenarios and actor behaviour. This can be achieved by monitoring real traffic scenarios, e.g.\ tracking individual vehicles, cyclists and pedestrians, and building behavioural models for each of the tracked entities~\cite{behbahani2019learning}.
 %
-On the other hand, the creation of edge cases is critical to reach verification objectives in a timely manner. Edge cases are events that occur rarely under normal circumstances, yet realistic \textit{and\/}critical for gaining confidence in the correct behaviour of the AV, .
+On the other hand, the creation of edge cases is critical to reach verification objectives in a timely manner. Edge cases are events that occur rarely under normal circumstances, yet realistic \textit{and\/} critical for gaining confidence in the correct behaviour of the AV, .
 %
 This is exactly what the agent-based test generation approach introduced in this paper is aimed at.  
 
@@ -322,12 +322,12 @@ Test agents have also been proposed by Enoiu et al.~\cite{Enoiu2019} for regress
 This section describes a case study to explore the proposed agent-based test generation method.%
 \footnote{The code used is available at \url{github.com/TSL-UOB/CAV-MAS}.} %
 %
-Our aim is to generate tests that exercise an assertion that requires the AV to avoid collisions with other road users, provided that such road user, a pedestrian in this case, intrudes in the path of the AV in such a way that a collision can be avoided by the AV either by braking or manoeuvring. In Fig.~\ref{gridRoad} this is illustrated by the `Precondition Zone', i.e.\ the area of interest in which the assertion is activated.
+Our aim is to generate tests that exercise an assertion that requires the AV to avoid collisions with other road users, provided that such road user, a pedestrian in this case, intrudes in the path of the AV in such a way that a collision can be avoided by the AV either by braking or manoeuvring. In Fig.~\ref{gridRoad} this is illustrated by the \textit{precondition zone}, i.e.\ the area of interest in which the assertion is activated.
 
 In the following, we shall term tests that activate the assertion \textit{successful tests}; these count towards assertion coverage. 
 %
 % The precondition is activated when an entity (pedestrian) intrudes in the path of the AV which can be avoided either by braking or manoeuvring, see the `Precondition Zone' in Fig.~\ref{gridRoad}. 
-Intrusions that fall within the `Stopping Distance' of the AV~\cite{codes2015highway}, i.e.\ the 12m long zone 
+Intrusions that fall within the \textit{stopping distance} of the AV~\cite{codes2015highway}, i.e.\ the 12m long zone 
 directly ahead of the AV when driving at 30km/h, equivalent to {\raise.17ex\hbox{$\scriptstyle\sim$}}20mph (miles per hour) as marked in Fig.~\ref{gridRoad}, are not considered interesting as they result in unavoidable collisions; tests of this type are of limited use~\cite{Tuncali2018}. 
 %
 %\todo{Check this!}
@@ -350,7 +350,7 @@ The AV travels along the left-hand lane of the road starting at cell $y=0$ and t
 % KIE: Does this mean activated (i.e.\ precondition satisfied) or it fires, i.e. the postcondition is not satisfied?
  or the AV reaches the end of the road, then the test is restarted. The AV occupies an area 4.5m$\times$3m equivalent to 3$\times$2 cells. There are no other vehicles and the right-hand side of the road is unoccupied.
 
-To activate the assertion, the precondition must be satisfied, i.e.\ an agent has entered the \textit{`Precondition Zone'} of the AV, which extends 6 cells forwards of the `Stopping Distance' of the vehicle as shown in~Fig.~\ref{gridRoad}. 
+To activate the assertion, the precondition must be satisfied, i.e.\ an agent has entered the \textit{precondition zone} of the AV, which extends 6 cells forwards of the \textit{stopping distance} of the vehicle as shown in~Fig.~\ref{gridRoad}. 
 %
 Under the given conditions, it is impossible for an agent to move into the AV's path from some pavement areas within the test environment. These are marked in dark grey in Fig.~\ref{gridRoad} and labelled invalid spawn locations. 
 
@@ -379,13 +379,13 @@ At the start of a test, pedestrians are randomly located onto the pavement area 
 
 We distinguish two main classes of behaviours, random and agency-directed, see also Table~\ref{t:ResultsTable}. For the random class, \textit{random} behaviour means that the test agent can perform any random action at each simulation tick, with the available actions being: do nothing (stand still), move forward, backward, left or right. In \textit{constrained random} mode, the pedestrian is initially walking along the pavement and has only one action available; to randomly choose when to cross the road. The constrained random behaviour is included so that a comparison between crossing the road at a targeted or at a random time can be made. 
 
-The second class of behaviours is agency-directed, taking into account the agent's perceptions for strategic planning. Agents are initially walking along the pavement as in constrained random mode. The \textit{proximity} behaviour instructs the agent to cross the road when the AV is within a certain radius. Using the \textit{intersect} behaviour, the agent calculates an intersection time with the AV's precondition zone; it chooses to cross the road if it can reach an intersection point before the AV has passed. The \textit{election} behaviour ranks the probability of each agent within a multi-agent setting to enact the intersect behaviour; it elects the agent with the highest likelihood of success.
+The second class of behaviours is agency-directed, taking into account the agent's perceptions for strategic planning. Agents are initially walking along the pavement as in constrained random mode. The \textit{proximity} behaviour instructs the agent to cross the road when the AV is within a certain radius. Using the \textit{intersect} behaviour, the agent calculates an intersection time with the AV's \textit{precondition zone}; it chooses to cross the road if it can reach an intersection point before the AV has passed. The \textit{election} behaviour ranks the probability of each agent within a multi-agent setting to enact the intersect behaviour; it elects the agent with the highest likelihood of success.
 
 Thus, the \textit{proximity} behaviour results in agents that will step into the road whenever a vehicle is nearby. Moreover, all nearby pedestrians are drawn to a passing vehicle.
 %
 While this may lead to the desired assertion coverage, this is very unrealistic behaviour. 
 %
-The \textit{intersect} behaviour is more refined than the \textit{proximity} behaviour, but may still result in multiple agents attempting to intrude in the AV's precondition zone simultaneously. 
+The \textit{intersect} behaviour is more refined than the \textit{proximity} behaviour, but may still result in multiple agents attempting to intrude in the AV's \textit{precondition zone} simultaneously. 
 %
 In contrast, the \textit{election} behaviour is designed to limit this to a single agent at a time.
 
@@ -399,7 +399,7 @@ In comparison, when using more intelligent, agency-directed behaviour, we expect
 %------------------- Scoring -----------------------------
 \subsection{Scoring}
 
-In an attempt to encourage more realistic agent behaviour, a basic scoring system is used to direct agent behaviour by penalising or rewarding certain actions. In particular, a living cost of one is charged for each elapsed time step to promote shorter tests, and a penalty of five is issued for each time step that  an agent spends in the road. A reward of 100 is given if the agent enters the AV's \textit{precondition zone}. More sophisticated scoring systems will be explored in our future work. 
+In an attempt to encourage more realistic agent behaviour, a basic scoring system is used to direct agent behaviour by penalising or rewarding certain actions. In particular, a living cost of one is charged for each elapsed time step to promote shorter tests, and a penalty of five is issued for each time step that  an agent spends in the road. A reward of 100 is given if the agent enters the AV's \textit{precondition zone} More sophisticated scoring systems will be explored in our future work. 
 
 % KIE: unclear :(
 % The scoring should reflect the benefits of the method against the desire to generate good tests~\cite{fewster1999software}.
