@@ -331,7 +331,7 @@ Intrusions that fall within the \textit{stopping distance} of the AV~\cite{codes
 directly ahead of the AV when driving at 30km/h, equivalent to {\raise.17ex\hbox{$\scriptstyle\sim$}}20mph (miles per hour) as marked in Fig.~\ref{gridRoad}, are not considered interesting as they result in unavoidable collisions; tests of this type are of limited use~\cite{Tuncali2018}. 
 %
 %\todo{Check this!}
-Thus, in this case study, unavoidable collisions are those with a time to collision (TTC) of less than 1.33s. % based on 12m
+Thus, in this case study, unavoidable collisions are those with a time to collision (TTC) of less than 1.33s. The extent of the \textit{precondition zone} is limited to a single simulation tick (1.0s) which puts the upper limit at 2.33s ahead of the \textit{stopping distance}.% based on 12m
 %
 % KIE: an avoidable collision is defined as TTC<1s - REALLY? THIS WOULD BE FOR 9m, rather than 12m stopping distance :(
 
@@ -379,15 +379,14 @@ At the start of a test, pedestrians are randomly located onto the pavement area 
 
 We distinguish two main classes of behaviours, random and agency-directed, see also Table~\ref{t:ResultsTable}. For the random class, \textit{random} behaviour means that the test agent can perform any random action at each simulation tick, with the available actions being: do nothing (stand still), move forward, backward, left or right. In \textit{constrained random} mode, the pedestrian is initially walking along the pavement and has only one action available; to randomly choose when to cross the road. The constrained random behaviour is included so that a comparison between crossing the road at a targeted or at a random time can be made. 
 
-The second class of behaviours is agency-directed, taking into account the agent's perceptions for strategic planning. Agents are initially walking along the pavement as in constrained random mode. The \textit{proximity} behaviour instructs the agent to cross the road when the AV is within a certain radius. Using the \textit{intersect} behaviour, the agent calculates an intersection time with the AV's \textit{precondition zone}; it chooses to cross the road if it can reach an intersection point before the AV has passed. The \textit{election} behaviour ranks the probability of each agent within a multi-agent setting to enact the intersect behaviour; it elects the agent with the highest likelihood of success.
-
-Thus, the \textit{proximity} behaviour results in agents that will step into the road whenever a vehicle is nearby. Moreover, all nearby pedestrians are drawn to a passing vehicle.
+The second class of behaviours is agency-directed, taking into account the agent's perceptions for strategic planning. Agents are initially walking along the pavement as in constrained random mode. The \textit{proximity} behaviour instructs the agent to cross the road when the AV is within a certain radius. The \textit{election} behaviour ranks agents within a proximity radius to the AV and elects the agent with the shortest distance to the AV. The major difference between the agent-directed behaviours is that the \textit{election} behaviour will only elect a single agent to cross the road whereas the \textit{proximity} behaviour will result any number of agents crossing the road as long as they are within range.
+% Thus, the \textit{proximity} behaviour results in agents that will step into the road whenever a vehicle is nearby. Moreover, all nearby pedestrians are drawn to a passing vehicle.
 %
-While this may lead to the desired assertion coverage, this is very unrealistic behaviour. 
+While the \textit{proximity} behaviour may lead to the desired coverage it is less realistic than the \textit{election} behaviour. 
 %
-The \textit{intersect} behaviour is more refined than the \textit{proximity} behaviour, but may still result in multiple agents attempting to intrude in the AV's \textit{precondition zone} simultaneously. 
+% The \textit{intersect} behaviour is more refined than the \textit{proximity} behaviour, but may still result in multiple agents attempting to intrude in the AV's \textit{precondition zone} simultaneously. 
 %
-In contrast, the \textit{election} behaviour is designed to limit this to a single agent at a time.
+% In contrast, the \textit{election} behaviour is designed to limit this to a single agent at a time.
 
 % Agent numbers
 The final factor to consider is the number of agents per test; too few and the likelihood of an agent activating the assertion will be low and entirely dependent on the initial starting position of the agent in the test environment due to differences in speed. The number of agents is physically limited by the number of available grid locations (1.5m spacing) on the pavement. % without overlap.
